@@ -5,8 +5,14 @@ import 'package:atlantis_di_photos_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class DropdownOptionsWidget extends StatefulWidget {
-  final Function(String, int) onOptionSelected;
-  const DropdownOptionsWidget({super.key, required this.onOptionSelected});
+  final Function(String, int, String) onOptionSelected;
+  final String selectedOption;
+  final String selectedOfferAmount;
+  const DropdownOptionsWidget(
+      {super.key,
+      required this.onOptionSelected,
+      required this.selectedOption,
+      required this.selectedOfferAmount});
 
   @override
   State<DropdownOptionsWidget> createState() => _DropdownOptionsWidgetState();
@@ -16,10 +22,21 @@ class _DropdownOptionsWidgetState extends State<DropdownOptionsWidget> {
   int? selectedDropdownOptionIndex;
 
   @override
+  void initState() {
+    super.initState();
+
+    selectedDropdownOptionIndex = offersDropdownList.indexWhere(
+      (offer) =>
+          'Choose ${offer.imageCount} image for ${offer.amount} ${offer.currency} ' ==
+          widget.selectedOption,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           color: ConstColors.DIOfferDropdownBorderGrey,
@@ -58,8 +75,13 @@ class _DropdownOptionsWidgetState extends State<DropdownOptionsWidget> {
                 });
                 Future.delayed(const Duration(milliseconds: 300), () {
                   widget.onOptionSelected(
-                      'Choose ${offersDropdownList[dropdownIndex].imageCount} image for ${offersDropdownList[dropdownIndex].amount} ${offersDropdownList[dropdownIndex].currency} ',
-                      offersDropdownList[dropdownIndex].imageCount);
+                    'Choose ${offersDropdownList[dropdownIndex].imageCount} image for ${offersDropdownList[dropdownIndex].amount} ${offersDropdownList[dropdownIndex].currency} ',
+                    offersDropdownList[dropdownIndex].imageCount,
+                    offersDropdownList[dropdownIndex].amount +
+                        '.00' +
+                        " " +
+                        offersDropdownList[dropdownIndex].currency,
+                  );
                 });
               },
             ),

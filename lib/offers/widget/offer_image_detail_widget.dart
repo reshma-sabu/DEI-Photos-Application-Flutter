@@ -1,5 +1,4 @@
 import 'package:atlantis_di_photos_app/model/offers/offersM.dart';
-import 'package:atlantis_di_photos_app/offers/preview_video_screen.dart';
 import 'package:atlantis_di_photos_app/offers/widget/selected_checkbox_widget.dart';
 import 'package:atlantis_di_photos_app/utils/colors.dart';
 import 'package:atlantis_di_photos_app/utils/constants.dart';
@@ -8,10 +7,18 @@ import 'package:flutter/material.dart';
 class OfferImageDetailWidget extends StatefulWidget {
   final List<OfferDetailM> offerDetails;
   final int index;
-  final VoidCallback onImageTap; 
+  final Function(bool) onImageSelectionChanged;
+  final int selectedImageCount;
+  final int maxSelectImageCount;
 
-  const OfferImageDetailWidget(
-      {super.key, required this.offerDetails, required this.index, required this.onImageTap});
+  const OfferImageDetailWidget({
+    super.key,
+    required this.offerDetails,
+    required this.index,
+    required this.onImageSelectionChanged,
+    required this.selectedImageCount,
+    required this.maxSelectImageCount,
+  });
 
   @override
   State<OfferImageDetailWidget> createState() => _OfferImageDetailWidgetState();
@@ -21,9 +28,33 @@ class _OfferImageDetailWidgetState extends State<OfferImageDetailWidget> {
   bool isChecked = false;
 
   void _toggleCheckbox() {
-    setState(() {
-      isChecked = !isChecked;
-    });
+    final isSelected = widget.offerDetails[widget.index].isSelected ?? false;
+
+    if (widget.maxSelectImageCount == 0 ||
+        (widget.selectedImageCount < widget.maxSelectImageCount)) {
+      setState(() {
+        widget.offerDetails[widget.index].isSelected =
+            !(widget.offerDetails[widget.index].isSelected ?? false);
+        widget.onImageSelectionChanged(
+            widget.offerDetails[widget.index].isSelected!);
+      });
+    } else if (widget.offerDetails[widget.index].isSelected == true) {
+      setState(() {
+        widget.offerDetails[widget.index].isSelected = false;
+        widget.onImageSelectionChanged(false);
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: ConstColors.DIGreen,
+        content: Text(
+          'You have reached maximum limit of ${widget.maxSelectImageCount} images.',
+          style: const TextStyle(
+              color: Colors.white,
+              fontFamily: DIConstants.AvertaDemoPE,
+              fontSize: 14),
+        ),
+      ));
+    }
   }
 
   @override
@@ -43,22 +74,16 @@ class _OfferImageDetailWidgetState extends State<OfferImageDetailWidget> {
                   height: 112,
                 ),
               ),
-              widget.offerDetails[widget.index].isVideo
-                  ? const Icon(
-                      Icons.play_circle_fill,
-                      color: ConstColors.DIGreen,
-                      size: 35,
-                    )
-                  : Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: 28,
-                      child: Container(
-                        height: 60,
-                        decoration: const BoxDecoration(
-                            color: ConstColors.DIGreenOffersTabWithOpacity),
-                        child: Image.asset('assets/images/logo.png'),
-                      )),
+              Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 28,
+                  child: Container(
+                    height: 60,
+                    decoration: const BoxDecoration(
+                        color: ConstColors.DIGreenOffersTabWithOpacity),
+                    child: Image.asset('assets/images/logo.png'),
+                  )),
               Positioned(
                   bottom: 0,
                   left: 0,
@@ -103,7 +128,9 @@ class _OfferImageDetailWidgetState extends State<OfferImageDetailWidget> {
                                   onTap: () {
                                     _toggleCheckbox();
                                   },
-                                  child: isChecked
+                                  child: widget.offerDetails[widget.index]
+                                              .isSelected ??
+                                          false
                                       ? const SelectedCheckboxWidget()
                                       : Image.asset(
                                           'assets/images/checkbox.png',

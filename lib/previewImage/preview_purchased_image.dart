@@ -38,8 +38,8 @@ class PreviewPurchasedImage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 20.0),
               child: IconButton(
-                icon: Image.asset(
-                  'assets/images/share.png',
+                icon: Image.network(
+                  image,
                   height: 24,
                   width: 24,
                 ),
@@ -55,8 +55,8 @@ class PreviewPurchasedImage extends StatelessWidget {
         body: SafeArea(
             child: Padding(
           padding: const EdgeInsets.only(top: 20.0),
-          child: Image.asset(
-            'assets/images/downloadedImage.png',
+          child: Image.network(
+            image,
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,

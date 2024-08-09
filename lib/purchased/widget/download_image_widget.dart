@@ -1,10 +1,14 @@
+import 'dart:io';
+import 'dart:math';
 import 'package:atlantis_di_photos_app/model/offers/dummy_data/dummy_data.dart';
 import 'package:atlantis_di_photos_app/previewImage/preview_purchased_image.dart';
 import 'package:atlantis_di_photos_app/purchased/widget/image_downloaded_bottom_toast_widget.dart';
 import 'package:atlantis_di_photos_app/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:atlantis_di_photos_app/model/purchased/purchasedM.dart';
 import 'package:atlantis_di_photos_app/utils/colors.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 class DownloadImageWidget extends StatefulWidget {
   const DownloadImageWidget({super.key});
@@ -14,23 +18,63 @@ class DownloadImageWidget extends StatefulWidget {
 }
 
 class _DownloadImageWidgetState extends State<DownloadImageWidget> {
-  void _downloadpurchasedImage(int sectionIndex, int index) {
-    setState(() {
-      imagesList[sectionIndex].imageDetail[index].isDownloaded = true;
-    });
-    _showToast();
+  Future<void> _downloadPurchasedImage(
+      int sectionIndex, int index, String _url) async {
+    var random = Random();
+    String message = '';
+
+    try {
+      final http.Response response = await http.get(Uri.parse(_url));
+      if (response.statusCode == 200) {
+        final dir = await getTemporaryDirectory();
+        var filename = '${dir.path}/SaveImage${random.nextInt(100)}.png';
+        final file = File(filename);
+        await file.writeAsBytes(response.bodyBytes);
+
+        final params = SaveFileDialogParams(sourceFilePath: file.path);
+        final finalPath = await FlutterFileDialog.saveFile(params: params);
+
+        if (finalPath != null) {
+          message = 'Image saved to disk';
+          setState(() {
+            imagesList[sectionIndex].imageDetail[index].isDownloaded = true;
+          });
+          _showToast(DIConstants.imageSavedMsg);
+        } else {
+          message = 'Image save cancelled';
+          setState(() {
+            imagesList[sectionIndex].imageDetail[index].isDownloaded = false;
+          });
+          _showToast(message);
+        }
+      } else {
+        message = 'Failed to download image';
+        setState(() {
+          imagesList[sectionIndex].imageDetail[index].isDownloaded = false;
+        });
+        _showToast(message);
+      }
+    } catch (e) {
+      message = 'Error: ${e.toString()}';
+      setState(() {
+        imagesList[sectionIndex].imageDetail[index].isDownloaded = false;
+      });
+      _showToast(message);
+    }
   }
 
-  void _showToast() {
+  void _showToast(String message) {
     final overlay = Overlay.of(context);
     final overlayEntry = OverlayEntry(
-      builder: (context) => const Positioned(
+      builder: (context) => Positioned(
         bottom: 0,
         left: 0,
         right: 0,
         child: Material(
           color: Colors.transparent,
-          child: ImageDownloadedBottomToastWidget(),
+          child: ImageDownloadedBottomToastWidget(
+            message: message,
+          ),
         ),
       ),
     );
@@ -100,7 +144,7 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
                               : null,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: Image.asset(
+                            child: Image.network(
                               data.imageUrl ?? '',
                               fit: BoxFit.cover,
                               width: 112,
@@ -111,7 +155,8 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
                         if (!data.isDownloaded)
                           GestureDetector(
                             onTap: () {
-                              _downloadpurchasedImage(sectionIndex, index);
+                              _downloadPurchasedImage(
+                                  sectionIndex, index, data.imageUrl ?? '');
                             },
                             child: Image.asset(
                               'assets/images/downloadIcon.png',

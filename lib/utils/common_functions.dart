@@ -18,7 +18,9 @@ Future<void> shareImageFromAssets({
 
     await file.writeAsBytes(list);
 
-    await Share.shareXFiles([XFile(file.path)], );
+    await Share.shareXFiles(
+      [XFile(file.path)],
+    );
   } catch (e) {
     print('Error sharing image: $e');
   }

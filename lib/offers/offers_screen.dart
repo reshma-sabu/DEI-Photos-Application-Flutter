@@ -18,6 +18,8 @@ class _OffersScreenState extends State<OffersScreen> {
   String selectedOption = DIConstants.viewOffers;
   int selectedImagesCount = 0;
   int maxSelectableImages = 0;
+  String? amountFromSelectedDropdownOption;
+  double totalSum = 0.0;
 
   void showHideDropdownMenu() {
     setState(() {
@@ -26,27 +28,38 @@ class _OffersScreenState extends State<OffersScreen> {
   }
 
   void updateSelectedDropdownOption(
-    String option,
-    int maxImages
-  ) {
+      String option, int maxImages, String amount) {
     setState(() {
       selectedOption = option;
       isDropdownMenuHidden = true;
       maxSelectableImages = maxImages;
+      amountFromSelectedDropdownOption = amount;
     });
   }
 
-  void onImageSelected() {
-    if (selectedImagesCount < maxSelectableImages) {
+  void onImageSelectionChanged({isSelected, required imagePrice}) {
+    if (maxSelectableImages == 0) {
       setState(() {
-        selectedImagesCount++;
+        if (isSelected) {
+          selectedImagesCount++;
+          totalSum += imagePrice;
+        } else {
+          selectedImagesCount--;
+          totalSum -= imagePrice;
+        }
       });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-              'You cannot select more than $maxSelectableImages images.')));
+      setState(() {
+        if (isSelected) {
+          selectedImagesCount++;
+        } else {
+          selectedImagesCount--;
+        }
+      });
     }
   }
+
+  bool get wantKeepAlive => false;
 
   @override
   Widget build(BuildContext context) {
@@ -105,15 +118,15 @@ class _OffersScreenState extends State<OffersScreen> {
               const SizedBox(
                 height: 20,
               ),
-              if (selectedOption != DIConstants.viewOffers)
+              if (totalSum > 0 || selectedImagesCount > 0)
                 Container(
                   height: 60,
                   decoration: const BoxDecoration(
                     color: (ConstColors.DITotalAmountInOffer),
                   ),
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.only(left: 52.0),
                         child: Text(
                           DIConstants.total,
@@ -124,12 +137,14 @@ class _OffersScreenState extends State<OffersScreen> {
                               color: ConstColors.DIGreen),
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Padding(
                         padding: EdgeInsets.only(right: 52.0),
                         child: Text(
-                          '30.00 ADE',
-                          style: TextStyle(
+                          selectedOption != DIConstants.viewOffers
+                              ? (amountFromSelectedDropdownOption ?? '')
+                              : totalSum.toStringAsFixed(2),
+                          style: const TextStyle(
                               fontFamily: DIConstants.AvertaDemoPE,
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
@@ -163,6 +178,7 @@ class _OffersScreenState extends State<OffersScreen> {
                     childAspectRatio: 1,
                   ),
                   itemBuilder: (context, index) {
+                    final offerDetail = offerDetailList[index];
                     return SizedBox(
                       child: Stack(
                         alignment: Alignment.center,
@@ -170,7 +186,14 @@ class _OffersScreenState extends State<OffersScreen> {
                           OfferImageDetailWidget(
                             offerDetails: offerDetailList,
                             index: index,
-                            onImageTap: onImageSelected
+                            selectedImageCount: selectedImagesCount,
+                            maxSelectImageCount: maxSelectableImages,
+                            onImageSelectionChanged: (bool isSelected) {
+                              onImageSelectionChanged(
+                                isSelected: isSelected,
+                                imagePrice: offerDetail.price,
+                              );
+                            },
                           )
                         ],
                       ),
@@ -213,7 +236,11 @@ class _OffersScreenState extends State<OffersScreen> {
             child: Visibility(
               visible: !isDropdownMenuHidden,
               child: DropdownOptionsWidget(
-                  onOptionSelected: (option, maxImages) => updateSelectedDropdownOption(option, maxImages)),
+                onOptionSelected: (option, maxImages, amount) =>
+                    updateSelectedDropdownOption(option, maxImages, amount),
+                selectedOption: selectedOption,
+                selectedOfferAmount: amountFromSelectedDropdownOption ?? '',
+              ),
             ),
           ),
         ],
