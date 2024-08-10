@@ -50,9 +50,16 @@ class _DropdownOptionsWidgetState extends State<DropdownOptionsWidget> {
         padding: EdgeInsets.zero,
         itemCount: offersDropdownList.length,
         itemBuilder: (context, dropdownIndex) {
+           bool isFirst = dropdownIndex == 0;
+          bool isLast = dropdownIndex == offersDropdownList.length - 1;
           return Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.only(
+                topLeft: isFirst ? const Radius.circular(8) : Radius.zero,
+                topRight: isFirst ? const Radius.circular(8) : Radius.zero,
+                bottomLeft: isLast ? const Radius.circular(8) : Radius.zero,
+                bottomRight: isLast ? const Radius.circular(8) : Radius.zero,
+              ),
               color: selectedDropdownOptionIndex == dropdownIndex
                   ? ConstColors.DIGreenOffersTabWithOpacity
                   : Colors.white,
@@ -70,12 +77,18 @@ class _DropdownOptionsWidgetState extends State<DropdownOptionsWidget> {
                     color: ConstColors.DIOfferDropdownTextColor),
               ),
               onTap: () {
+                final selectedDpOption =
+                    'Choose ${offersDropdownList[dropdownIndex].imageCount} image for ${offersDropdownList[dropdownIndex].amount} ${offersDropdownList[dropdownIndex].currency} ';
+
                 setState(() {
                   selectedDropdownOptionIndex = dropdownIndex;
+                  offersDropdownList[dropdownIndex].selectedDropdownOption =
+                      selectedDpOption;
                 });
                 Future.delayed(const Duration(milliseconds: 300), () {
                   widget.onOptionSelected(
-                    'Choose ${offersDropdownList[dropdownIndex].imageCount} image for ${offersDropdownList[dropdownIndex].amount} ${offersDropdownList[dropdownIndex].currency} ',
+                    offersDropdownList[dropdownIndex].selectedDropdownOption =
+                        selectedDpOption,
                     offersDropdownList[dropdownIndex].imageCount,
                     offersDropdownList[dropdownIndex].amount +
                         '.00' +

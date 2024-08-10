@@ -19,6 +19,7 @@ class _OffersScreenState extends State<OffersScreen> {
   int selectedImagesCount = 0;
   int maxSelectableImages = 0;
   String? amountFromSelectedDropdownOption;
+  List<int>? listOfSelectedItems;
   double totalSum = 0.0;
 
   void showHideDropdownMenu() {
@@ -58,8 +59,6 @@ class _OffersScreenState extends State<OffersScreen> {
       });
     }
   }
-
-  bool get wantKeepAlive => false;
 
   @override
   Widget build(BuildContext context) {
@@ -169,36 +168,40 @@ class _OffersScreenState extends State<OffersScreen> {
               ),
               const SizedBox(height: 10),
               Expanded(
-                child: GridView.builder(
-                  itemCount: offerDetailList.length,
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: DIConstants.getScreenWidth(context) / 3,
-                    mainAxisSpacing: 5,
-                    crossAxisSpacing: 5,
-                    childAspectRatio: 1,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GridView.builder(
+                    itemCount: offerDetailList.length,
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent:
+                          DIConstants.getScreenWidth(context) / 3,
+                      mainAxisSpacing: 2,
+                      crossAxisSpacing: 2,
+                      childAspectRatio: 1,
+                    ),
+                    itemBuilder: (context, index) {
+                      final offerDetail = offerDetailList[index];
+                      return SizedBox(
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            OfferImageDetailWidget(
+                              offerDetails: offerDetailList,
+                              index: index,
+                              selectedImageCount: selectedImagesCount,
+                              maxSelectImageCount: maxSelectableImages,
+                              onImageSelectionChanged: (bool isSelected) {
+                                onImageSelectionChanged(
+                                  isSelected: isSelected,
+                                  imagePrice: offerDetail.price,
+                                );
+                              },
+                            )
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                  itemBuilder: (context, index) {
-                    final offerDetail = offerDetailList[index];
-                    return SizedBox(
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          OfferImageDetailWidget(
-                            offerDetails: offerDetailList,
-                            index: index,
-                            selectedImageCount: selectedImagesCount,
-                            maxSelectImageCount: maxSelectableImages,
-                            onImageSelectionChanged: (bool isSelected) {
-                              onImageSelectionChanged(
-                                isSelected: isSelected,
-                                imagePrice: offerDetail.price,
-                              );
-                            },
-                          )
-                        ],
-                      ),
-                    );
-                  },
                 ),
               ),
               const SizedBox(height: 5),

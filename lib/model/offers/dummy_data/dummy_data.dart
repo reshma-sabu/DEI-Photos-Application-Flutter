@@ -4,14 +4,15 @@ import 'package:atlantis_di_photos_app/model/purchased/purchasedM.dart';
 final imagesList = [
   PurchasedM(purchasedDate: "Jun 10", imageDetail: [
     PurchasedImagesDetail(
-        isDownloaded: true,
-        imageUrl: 'https://picsum.photos/seed/picsum/200/300'),
-    PurchasedImagesDetail(
         isDownloaded: false,
         imageUrl: 'https://picsum.photos/seed/picsum/200/300'),
     PurchasedImagesDetail(
         isDownloaded: false,
-        imageUrl: 'https://picsum.photos/seed/picsum/200/300'),
+        imageUrl: 'https://picsum.photos/200/300?grayscale'),
+    PurchasedImagesDetail(
+        isDownloaded: false,
+        imageUrl: 'https://picsum.photos/200/300/?blur=2'),
+        
   ]),
   // PurchasedM(purchasedDate: "Jun 7", imageDetail: [
   //   PurchasedImagesDetail(
@@ -35,7 +36,7 @@ final offerDetailList = [
   OfferDetailM(
     isSelected: false,
     imageUrl:
-        'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+        'https://picsum.photos/id/870/200/300?grayscale&blur=2',
     price: 10.00,
     currency: 'ADE',
     isVideo: false,
