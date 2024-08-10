@@ -1,3 +1,6 @@
+import 'package:atlantis_di_photos_app/model/image.dart';
+import 'package:atlantis_di_photos_app/model/offers/offersM.dart';
+import 'package:atlantis_di_photos_app/web_service/get_offer_details.dart';
 import 'package:flutter/material.dart';
 import 'package:atlantis_di_photos_app/model/offers/dummy_data/dummy_data.dart';
 import 'package:atlantis_di_photos_app/offers/widget/dropdown_options_widget.dart';
@@ -21,6 +24,13 @@ class _OffersScreenState extends State<OffersScreen> {
   String? amountFromSelectedDropdownOption;
   List<int>? listOfSelectedItems;
   double totalSum = 0.0;
+  late Future<List<ImageM>> _offerDetailsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _offerDetailsFuture = loadOfferDetailData(); // Initialize the Future
+  }
 
   void showHideDropdownMenu() {
     setState(() {
@@ -169,40 +179,59 @@ class _OffersScreenState extends State<OffersScreen> {
               const SizedBox(height: 10),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GridView.builder(
-                    itemCount: offerDetailList.length,
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent:
-                          DIConstants.getScreenWidth(context) / 3,
-                      mainAxisSpacing: 2,
-                      crossAxisSpacing: 2,
-                      childAspectRatio: 1,
-                    ),
-                    itemBuilder: (context, index) {
-                      final offerDetail = offerDetailList[index];
-                      return SizedBox(
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            OfferImageDetailWidget(
-                              offerDetails: offerDetailList,
-                              index: index,
-                              selectedImageCount: selectedImagesCount,
-                              maxSelectImageCount: maxSelectableImages,
-                              onImageSelectionChanged: (bool isSelected) {
-                                onImageSelectionChanged(
-                                  isSelected: isSelected,
-                                  imagePrice: offerDetail.price,
+                    padding: const EdgeInsets.all(8.0),
+                    child: FutureBuilder<List<ImageM>>(
+                        future: _offerDetailsFuture,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<ImageM>> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text('Error: ${snapshot.error}'));
+                          } else if (!snapshot.hasData ||
+                              snapshot.data!.isEmpty) {
+                            return const Center(child: Text('No data available'));
+                          } else {
+                            final offerDetailList = snapshot.data!;
+                           return GridView.builder(
+                              itemCount: offerDetailList.length,
+                              gridDelegate:
+                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent:
+                                    DIConstants.getScreenWidth(context) / 3,
+                                mainAxisSpacing: 2,
+                                crossAxisSpacing: 2,
+                                childAspectRatio: 1,
+                              ),
+                              itemBuilder: (context, index) {
+                                final offerDetail = offerDetailList[index];
+                                return SizedBox(
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      OfferImageDetailWidget(
+                                        offerDetails: offerDetailList,
+                                        index: index,
+                                        selectedImageCount: selectedImagesCount,
+                                        maxSelectImageCount:
+                                            maxSelectableImages,
+                                        onImageSelectionChanged:
+                                            (bool isSelected) {
+                                          onImageSelectionChanged(
+                                            isSelected: isSelected,
+                                            imagePrice: offerDetail.price,
+                                          );
+                                        },
+                                      )
+                                    ],
+                                  ),
                                 );
                               },
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                            );
+                          }
+                        })),
               ),
               const SizedBox(height: 5),
               Center(

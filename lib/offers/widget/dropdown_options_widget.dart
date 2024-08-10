@@ -20,6 +20,7 @@ class DropdownOptionsWidget extends StatefulWidget {
 
 class _DropdownOptionsWidgetState extends State<DropdownOptionsWidget> {
   int? selectedDropdownOptionIndex;
+  late Future<OfferDetailM> offerDetailData;
 
   @override
   void initState() {

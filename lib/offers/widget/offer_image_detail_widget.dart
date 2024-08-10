@@ -1,3 +1,4 @@
+import 'package:atlantis_di_photos_app/model/image.dart';
 import 'package:atlantis_di_photos_app/model/offers/offersM.dart';
 import 'package:atlantis_di_photos_app/offers/widget/selected_checkbox_widget.dart';
 import 'package:atlantis_di_photos_app/utils/colors.dart';
@@ -5,7 +6,7 @@ import 'package:atlantis_di_photos_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class OfferImageDetailWidget extends StatefulWidget {
-  final List<OfferDetailM> offerDetails;
+  final List<ImageM> offerDetails;
   final int index;
   final Function(bool) onImageSelectionChanged;
   final int selectedImageCount;

@@ -80,6 +80,7 @@ flutter:
     - assets/images/check.png
     - assets/video/video1.mp4
     - assets/video/video2.mp4
+    - assets/offers_data.json
 
   
   fonts:
