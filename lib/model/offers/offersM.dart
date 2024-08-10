@@ -43,4 +43,14 @@ class OfferPriceDetail {
       required this.amount,
       required this.currency,
       required this.selectedDropdownOption});
+
+  factory OfferPriceDetail.fromJson(Map<String, dynamic> json) {
+    return OfferPriceDetail(
+      offerDetail: json['offerDetail'],
+      imageCount: json['imageCount'],
+      amount: json['amount'],
+      currency: json['currency'],
+      selectedDropdownOption: json['selectedDropdownOption'],
+    );
+  }
 }

@@ -9,27 +9,38 @@ class PurchasedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.arrow_back,
-                color: ConstColors.DIGreen,
-              )),
-          title: const Text(
-            'Photo Booth',
-            style: TextStyle(
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.arrow_back,
               color: ConstColors.DIGreen,
-              fontFamily: DIConstants.SkiaFont,
-              fontSize: 20,
-              //figma weight is 400
-              fontWeight: FontWeight.w700,
-            ),
+            )),
+        title: const Text(
+          'Photo Booth',
+          style: TextStyle(
+            color: ConstColors.DIGreen,
+            fontFamily: DIConstants.SkiaFont,
+            fontSize: 20,
+            //figma weight is 400
+            fontWeight: FontWeight.w700,
           ),
         ),
-        body: 
-            const PurchasedTabScreen(),
-          
-        );
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: IconButton(
+              icon: Image.asset(
+                'assets/images/cart.png',
+                height: 21.21,
+                width: 24,
+              ),
+              onPressed: () {},
+            ),
+          ),
+        ],
+      ),
+      body: const PurchasedTabScreen(),
+    );
   }
 }

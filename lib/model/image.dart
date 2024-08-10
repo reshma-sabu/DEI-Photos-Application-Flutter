@@ -31,4 +31,17 @@ class ImageM {
       isDownloaded: json['isDownloaded'],
     );
   }
+
+   Map<String, dynamic> toJson() {
+    return {
+      'isSelected': isSelected,
+      'imageUrl': imageUrl,
+      'price': price,
+      'currency': currency,
+      'videoThumbnail': videoThumbnail,
+      'videoUrl': videoUrl,
+      'isVideo': isVideo,
+      'isDownloaded': isDownloaded,
+    };
+  }
 }

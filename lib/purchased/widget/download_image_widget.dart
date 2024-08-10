@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'dart:math';
-import 'package:atlantis_di_photos_app/model/offers/dummy_data/dummy_data.dart';
+import 'package:atlantis_di_photos_app/model/purchased/purchasedM.dart';
 import 'package:atlantis_di_photos_app/previewImage/preview_purchased_image.dart';
 import 'package:atlantis_di_photos_app/purchased/widget/image_downloaded_bottom_toast_widget.dart';
 import 'package:atlantis_di_photos_app/utils/constants.dart';
+import 'package:atlantis_di_photos_app/web_service/get_purchased_details.dart';
 import 'package:flutter/material.dart';
 import 'package:atlantis_di_photos_app/utils/colors.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
@@ -18,6 +19,14 @@ class DownloadImageWidget extends StatefulWidget {
 }
 
 class _DownloadImageWidgetState extends State<DownloadImageWidget> {
+  late Future<List<PurchasedM>> _purchasedImageFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _purchasedImageFuture = getPurchasedImages();
+  }
+
   Future<void> _downloadPurchasedImage(
       int sectionIndex, int index, String _url) async {
     var random = Random();
@@ -37,30 +46,41 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
         if (finalPath != null) {
           message = 'Image saved to disk';
           setState(() {
-            imagesList[sectionIndex].imageDetail[index].isDownloaded = true;
+            _updateDownloadedStatus(context, sectionIndex, index, true);
           });
           _showToast(DIConstants.imageSavedMsg);
         } else {
           message = 'Image save cancelled';
           setState(() {
-            imagesList[sectionIndex].imageDetail[index].isDownloaded = false;
+            _updateDownloadedStatus(context, sectionIndex, index, false);
           });
           _showToast(message);
         }
       } else {
         message = 'Failed to download image';
         setState(() {
-          imagesList[sectionIndex].imageDetail[index].isDownloaded = false;
+          _updateDownloadedStatus(context, sectionIndex, index, false);
         });
         _showToast(message);
       }
     } catch (e) {
       message = 'Error: ${e.toString()}';
       setState(() {
-        imagesList[sectionIndex].imageDetail[index].isDownloaded = false;
+        _updateDownloadedStatus(context, sectionIndex, index, false);
       });
       _showToast(message);
     }
+  }
+
+  void _updateDownloadedStatus(
+      BuildContext context, int sectionIndex, int index, bool isDownloaded) {
+    setState(() {
+      _purchasedImageFuture.then((list) {
+        if (list.isNotEmpty) {
+          list[sectionIndex].imageDetail[index].isDownloaded = isDownloaded;
+        }
+      });
+    });
   }
 
   void _showToast(String message) {
@@ -99,80 +119,99 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: ListView.builder(
-        itemCount: imagesList.length,
-        itemBuilder: (context, sectionIndex) {
-          final isFirstItem = sectionIndex == 0;
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(5, isFirstItem ? 10 : 30, 10, 8),
-                child: Text(
-                  imagesList[sectionIndex].purchasedDate,
-                  style: const TextStyle(
-                      fontSize: 20,
-                      color: ConstColors.DIGreen,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: DIConstants.AvertaDemoPE),
-                ),
-              ),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: imagesList[sectionIndex].imageDetail.length,
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent:
-                      // Max extent of each cell
-                      screenWidth / 3,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  // Ensure square cells
-                  childAspectRatio: 1,
-                ),
-                itemBuilder: (context, index) {
-                  final data = imagesList[sectionIndex].imageDetail[index];
-                  return SizedBox(
-                    child: Stack(
-                      alignment: Alignment.center,
+        padding: const EdgeInsets.all(10.0),
+        child: FutureBuilder<List<PurchasedM>>(
+            future: _purchasedImageFuture,
+            builder: (BuildContext context,
+                AsyncSnapshot<List<PurchasedM>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(child: Text('No data available'));
+              } else {
+                final purchasedImageList = snapshot.data!;
+                return ListView.builder(
+                  itemCount: purchasedImageList.length,
+                  itemBuilder: (context, sectionIndex) {
+                    final isFirstItem = sectionIndex == 0;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GestureDetector(
-                          onTap: data.isDownloaded
-                              ? () => _navigateToAnotherScreen(
-                                  context, data.imageUrl ?? '')
-                              : null,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              data.imageUrl ?? '',
-                              fit: BoxFit.cover,
-                              width: 112,
-                              height: 112,
-                            ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(
+                              5, isFirstItem ? 10 : 30, 10, 8),
+                          child: Text(
+                            purchasedImageList[sectionIndex].purchasedDate,
+                            style: const TextStyle(
+                                fontSize: 20,
+                                color: ConstColors.DIGreen,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: DIConstants.AvertaDemoPE),
                           ),
                         ),
-                        if (!data.isDownloaded)
-                          GestureDetector(
-                            onTap: () {
-                              _downloadPurchasedImage(
-                                  sectionIndex, index, data.imageUrl ?? '');
-                            },
-                            child: Image.asset(
-                              'assets/images/downloadIcon.png',
-                              height: 50,
-                              width: 50,
-                            ),
-                          )
+                        GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: purchasedImageList[sectionIndex]
+                              .imageDetail
+                              .length,
+                          gridDelegate:
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent:
+                                // Max extent of each cell
+                                screenWidth / 3,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                            // Ensure square cells
+                            childAspectRatio: 1,
+                          ),
+                          itemBuilder: (context, index) {
+                            final data = purchasedImageList[sectionIndex]
+                                .imageDetail[index];
+                            return SizedBox(
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: data.isDownloaded ?? false
+                                        ? () => _navigateToAnotherScreen(
+                                            context, data.imageUrl)
+                                        : null,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.network(
+                                        data.imageUrl,
+                                        fit: BoxFit.cover,
+                                        width: 112,
+                                        height: 112,
+                                      ),
+                                    ),
+                                  ),
+                                  if (data.isDownloaded != null &&
+                                      !data.isDownloaded!)
+                                    GestureDetector(
+                                      onTap: () {
+                                        _downloadPurchasedImage(
+                                            sectionIndex, index, data.imageUrl);
+                                      },
+                                      child: Image.asset(
+                                        'assets/images/downloadIcon.png',
+                                        height: 50,
+                                        width: 50,
+                                      ),
+                                    )
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                       ],
-                    ),
-                  );
-                },
-              ),
-            ],
-          );
-        },
-      ),
-    );
+                    );
+                  },
+                );
+              }
+            }));
   }
 }

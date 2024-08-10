@@ -1,8 +1,6 @@
 import 'package:atlantis_di_photos_app/model/image.dart';
-import 'package:atlantis_di_photos_app/model/offers/offersM.dart';
 import 'package:atlantis_di_photos_app/web_service/get_offer_details.dart';
 import 'package:flutter/material.dart';
-import 'package:atlantis_di_photos_app/model/offers/dummy_data/dummy_data.dart';
 import 'package:atlantis_di_photos_app/offers/widget/dropdown_options_widget.dart';
 import 'package:atlantis_di_photos_app/offers/widget/offer_image_detail_widget.dart';
 import 'package:atlantis_di_photos_app/utils/colors.dart';
@@ -29,7 +27,8 @@ class _OffersScreenState extends State<OffersScreen> {
   @override
   void initState() {
     super.initState();
-    _offerDetailsFuture = loadOfferDetailData(); // Initialize the Future
+    _offerDetailsFuture = loadOfferDetailData();
+    // Initialize the Future
   }
 
   void showHideDropdownMenu() {
@@ -186,16 +185,18 @@ class _OffersScreenState extends State<OffersScreen> {
                             AsyncSnapshot<List<ImageM>> snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const Center(child: CircularProgressIndicator());
+                            return const Center(
+                                child: CircularProgressIndicator());
                           } else if (snapshot.hasError) {
                             return Center(
                                 child: Text('Error: ${snapshot.error}'));
                           } else if (!snapshot.hasData ||
                               snapshot.data!.isEmpty) {
-                            return const Center(child: Text('No data available'));
+                            return const Center(
+                                child: Text('No data available'));
                           } else {
                             final offerDetailList = snapshot.data!;
-                           return GridView.builder(
+                            return GridView.builder(
                               itemCount: offerDetailList.length,
                               gridDelegate:
                                   SliverGridDelegateWithMaxCrossAxisExtent(

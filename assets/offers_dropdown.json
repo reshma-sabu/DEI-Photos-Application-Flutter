@@ -1,0 +1,24 @@
+[
+    {
+        "offerDetail": "Choose 4 images for 20 AED",
+        "imageCount": 4,
+        "amount": "20",
+        "currency": "ADE",
+        "selectedDropdownOption": ""
+    },
+    {
+        "offerDetail": "Choose 5 images for 30 AED",
+        "imageCount": 5,
+        "amount": "30",
+        "currency": "ADE",
+        "selectedDropdownOption": ""
+    },
+    {
+        "offerDetail": "Choose 20 images for 70 AED",
+        "imageCount": 20,
+        "amount": "70",
+        "currency": "ADE",
+        "selectedDropdownOption": ""
+    }
+
+]

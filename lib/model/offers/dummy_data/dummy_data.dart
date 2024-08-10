@@ -1,33 +1,34 @@
+import 'package:atlantis_di_photos_app/model/image.dart';
 import 'package:atlantis_di_photos_app/model/offers/offersM.dart';
 import 'package:atlantis_di_photos_app/model/purchased/purchasedM.dart';
 
 final imagesList = [
   PurchasedM(purchasedDate: "Jun 10", imageDetail: [
-    PurchasedImagesDetail(
+    ImageM(
         isDownloaded: false,
         imageUrl: 'https://picsum.photos/seed/picsum/200/300'),
-    PurchasedImagesDetail(
+    ImageM(
         isDownloaded: false,
         imageUrl: 'https://picsum.photos/200/300?grayscale'),
-    PurchasedImagesDetail(
+    ImageM(
         isDownloaded: false,
         imageUrl: 'https://picsum.photos/200/300/?blur=2'),
         
   ]),
   // PurchasedM(purchasedDate: "Jun 7", imageDetail: [
-  //   PurchasedImagesDetail(
+  //   ImageM(
   //       isDownloaded: false, imageUrl: 'assets/images/image2.jpg'),
-  //   PurchasedImagesDetail(
+  //   ImageM(
   //       isDownloaded: false, imageUrl: 'assets/images/image1.jpg'),
-  //   PurchasedImagesDetail(
+  //   ImageM(
   //       isDownloaded: false, imageUrl: 'assets/images/image2.jpg'),
   // ]),
   // PurchasedM(purchasedDate: "March 28", imageDetail: [
-  //   PurchasedImagesDetail(
+  //   ImageM(
   //       isDownloaded: false, imageUrl: 'assets/images/image1.jpg'),
-  //   PurchasedImagesDetail(
+  //   ImageM(
   //       isDownloaded: false, imageUrl: 'assets/images/image2.jpg'),
-  //   PurchasedImagesDetail(
+  //   ImageM(
   //       isDownloaded: false, imageUrl: 'assets/images/image1.jpg'),
   // ]),
 ];

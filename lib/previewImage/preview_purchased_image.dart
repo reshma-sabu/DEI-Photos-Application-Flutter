@@ -38,8 +38,8 @@ class PreviewPurchasedImage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 20.0),
               child: IconButton(
-                icon: Image.network(
-                  image,
+                icon: Image.asset(
+                  'assets/images/share.png',
                   height: 24,
                   width: 24,
                 ),

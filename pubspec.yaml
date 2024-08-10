@@ -81,6 +81,9 @@ flutter:
     - assets/video/video1.mp4
     - assets/video/video2.mp4
     - assets/offers_data.json
+    - assets/offers_dropdown.json
+    - assets/purchased_images.json
+    - assets/images/cart.png
 
   
   fonts:
