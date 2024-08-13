@@ -1,3 +1,4 @@
+import 'package:atlantis_di_photos_app/Cart/cart_screen.dart';
 import 'package:atlantis_di_photos_app/model/image.dart';
 import 'package:atlantis_di_photos_app/web_service/get_offer_details.dart';
 import 'package:flutter/material.dart';
@@ -197,7 +198,7 @@ class _OffersScreenState extends State<OffersScreen> {
                           }
                         })),
               ),
-               const SizedBox(height: 10),
+              const SizedBox(height: 10),
               if (totalSum > 0 || selectedImagesCount > 0)
                 Container(
                   height: 60,
@@ -211,12 +212,11 @@ class _OffersScreenState extends State<OffersScreen> {
                         child: Text(
                           DIConstants.total,
                           style: TextStyle(
-                              fontFamily: DIConstants.AvertaDemoPE,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                              color: ConstColors.DIBGrey,
-                              
-                              ),
+                            fontFamily: DIConstants.AvertaDemoPE,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: ConstColors.DIBGrey,
+                          ),
                         ),
                       ),
                       const Spacer(),
@@ -241,6 +241,12 @@ class _OffersScreenState extends State<OffersScreen> {
                 child: GestureDetector(
                   onTap: () {
                     print('add to cart button pressed');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CartScreen(),
+                      ),
+                    );
                   },
                   child: Container(
                     height: 46,
