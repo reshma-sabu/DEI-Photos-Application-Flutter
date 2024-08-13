@@ -18,7 +18,7 @@ class _ImageDownloadedBottomToastWidgetState
     return Container(
       height: 73,
       width: double.infinity,
-      color: ConstColors.DIGreen,
+      color: ConstColors.DISnackbarYellow,
       child: Padding(
         padding: const EdgeInsets.only(left: 42, right: 20),
         child: Row(

@@ -13,4 +13,7 @@ class DIConstants {
   }
   static const String viewOffers = "View Offers";
   static const String total = 'Total:';
+  static const String imageSaveCancelledMessage = 'Image save cancelled';
+  static const String imageSaveFailedMessage = 'Failed to download image';
+
 }

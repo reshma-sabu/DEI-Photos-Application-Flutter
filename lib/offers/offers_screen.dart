@@ -126,43 +126,6 @@ class _OffersScreenState extends State<OffersScreen> {
               const SizedBox(
                 height: 20,
               ),
-              if (totalSum > 0 || selectedImagesCount > 0)
-                Container(
-                  height: 60,
-                  decoration: const BoxDecoration(
-                    color: (ConstColors.DITotalAmountInOffer),
-                  ),
-                  child: Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 52.0),
-                        child: Text(
-                          DIConstants.total,
-                          style: TextStyle(
-                              fontFamily: DIConstants.AvertaDemoPE,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                              color: ConstColors.DIGreen),
-                        ),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: EdgeInsets.only(right: 52.0),
-                        child: Text(
-                          selectedOption != DIConstants.viewOffers
-                              ? (amountFromSelectedDropdownOption ?? '')
-                              : totalSum.toStringAsFixed(2),
-                          style: const TextStyle(
-                              fontFamily: DIConstants.AvertaDemoPE,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                              color: ConstColors.DIGreen),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              const SizedBox(height: 20),
               const Padding(
                 padding: EdgeInsets.only(left: 16.0),
                 child: Text(
@@ -234,7 +197,46 @@ class _OffersScreenState extends State<OffersScreen> {
                           }
                         })),
               ),
-              const SizedBox(height: 5),
+               const SizedBox(height: 10),
+              if (totalSum > 0 || selectedImagesCount > 0)
+                Container(
+                  height: 60,
+                  decoration: const BoxDecoration(
+                    color: (ConstColors.DIOffersTotalBG),
+                  ),
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          DIConstants.total,
+                          style: TextStyle(
+                              fontFamily: DIConstants.AvertaDemoPE,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: ConstColors.DIBGrey,
+                              
+                              ),
+                        ),
+                      ),
+                      const Spacer(),
+                      Padding(
+                        padding: EdgeInsets.only(right: 20.0),
+                        child: Text(
+                          selectedOption != DIConstants.viewOffers
+                              ? (amountFromSelectedDropdownOption ?? '')
+                              : totalSum.toStringAsFixed(2),
+                          style: const TextStyle(
+                              fontFamily: DIConstants.AvertaDemoPE,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: ConstColors.DIGreen),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              const SizedBox(height: 15),
               Center(
                 child: GestureDetector(
                   onTap: () {
@@ -243,8 +245,8 @@ class _OffersScreenState extends State<OffersScreen> {
                   child: Container(
                     height: 46,
                     width: 360,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
+                    decoration: const BoxDecoration(
+                      // borderRadius: BorderRadius.circular(5),
                       color: ConstColors.DIGreen,
                     ),
                     child: const Center(

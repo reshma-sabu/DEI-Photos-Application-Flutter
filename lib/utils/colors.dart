@@ -11,5 +11,6 @@ class ConstColors {
   static const Color DIGreenOffersTabWithOpacity = Color(0x660D7B8A);
   static const Color DIOffersDropdownBorder = Color(0xFFE0E0E0);
   static const Color DITotalAmountInOffer = Color(0xFFF2F6F6);
-
+  static const Color DISnackbarYellow = Color(0XFFFFB600);
+  static const Color DIOffersTotalBG = Color(0XFFE0F5FA);
 }

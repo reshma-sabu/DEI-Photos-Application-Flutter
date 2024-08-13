@@ -44,24 +44,21 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
         final finalPath = await FlutterFileDialog.saveFile(params: params);
 
         if (finalPath != null) {
-          message = 'Image saved to disk';
           setState(() {
             _updateDownloadedStatus(context, sectionIndex, index, true);
           });
           _showToast(DIConstants.imageSavedMsg);
         } else {
-          message = 'Image save cancelled';
           setState(() {
             _updateDownloadedStatus(context, sectionIndex, index, false);
           });
-          _showToast(message);
+          _showToast(DIConstants.imageSaveCancelledMessage);
         }
       } else {
-        message = 'Failed to download image';
         setState(() {
           _updateDownloadedStatus(context, sectionIndex, index, false);
         });
-        _showToast(message);
+        _showToast(DIConstants.imageSaveFailedMessage);
       }
     } catch (e) {
       message = 'Error: ${e.toString()}';
