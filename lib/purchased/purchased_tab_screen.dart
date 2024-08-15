@@ -75,7 +75,7 @@ class PurchasedTabScreen extends StatelessWidget {
               style: TextStyle(
                   fontSize: 12,
                   fontFamily: DIConstants.AvertaDemoPE,
-                  color: ConstColors.DIGrey1,
+                  color: ConstColors.DIGreen,
                   fontWeight: FontWeight.w400),
               textAlign: TextAlign.start,
             ),

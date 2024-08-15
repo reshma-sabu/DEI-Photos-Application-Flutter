@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:atlantis_di_photos_app/utils/colors.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DownloadImageWidget extends StatefulWidget {
@@ -28,53 +29,55 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
   }
 
   Future<void> _downloadPurchasedImage(
-      int sectionIndex, int index, String _url) async {
-    var random = Random();
-    String message = '';
+    int sectionIndex, int index, String _url) async {
+  var random = Random();
+  String message = '';
+  String? finalPath;
 
-    try {
-      final http.Response response = await http.get(Uri.parse(_url));
-      if (response.statusCode == 200) {
-        final dir = await getTemporaryDirectory();
-        var filename = '${dir.path}/SaveImage${random.nextInt(100)}.png';
-        final file = File(filename);
-        await file.writeAsBytes(response.bodyBytes);
+  try {
+    final http.Response response = await http.get(Uri.parse(_url));
+    if (response.statusCode == 200) {
+      final dir = await getTemporaryDirectory();
+      var filename = '${dir.path}/DEI_Image${random.nextInt(100)}.png';
+      final file = File(filename);
+      await file.writeAsBytes(response.bodyBytes);
 
-        final params = SaveFileDialogParams(sourceFilePath: file.path);
-        final finalPath = await FlutterFileDialog.saveFile(params: params);
+      final params = SaveFileDialogParams(sourceFilePath: file.path);
+      finalPath = await FlutterFileDialog.saveFile(params: params);
 
-        if (finalPath != null) {
-          setState(() {
-            _updateDownloadedStatus(context, sectionIndex, index, true);
-          });
-          _showToast(DIConstants.imageSavedMsg);
-        } else {
-          setState(() {
-            _updateDownloadedStatus(context, sectionIndex, index, false);
-          });
-          _showToast(DIConstants.imageSaveCancelledMessage);
-        }
+      if (finalPath != null) {
+        setState(() {
+          _updateDownloadedStatus(context, sectionIndex, index, true, finalPath);
+        });
+        _showToast(DIConstants.imageSavedMsg);
       } else {
         setState(() {
-          _updateDownloadedStatus(context, sectionIndex, index, false);
+          _updateDownloadedStatus(context, sectionIndex, index, false, null);
         });
-        _showToast(DIConstants.imageSaveFailedMessage);
+        _showToast(DIConstants.imageSaveCancelledMessage);
       }
-    } catch (e) {
-      message = 'Error: ${e.toString()}';
+    } else {
       setState(() {
-        _updateDownloadedStatus(context, sectionIndex, index, false);
+        _updateDownloadedStatus(context, sectionIndex, index, false, null);
       });
-      _showToast(message);
+      _showToast(DIConstants.imageSaveFailedMessage);
     }
+  } catch (e) {
+    message = 'Error: ${e.toString()}';
+    setState(() {
+      _updateDownloadedStatus(context, sectionIndex, index, false, null);
+    });
+    _showToast(message);
   }
+}
 
-  void _updateDownloadedStatus(
-      BuildContext context, int sectionIndex, int index, bool isDownloaded) {
+  void _updateDownloadedStatus(BuildContext context, int sectionIndex,
+      int index, bool isDownloaded, String? localPath) {
     setState(() {
       _purchasedImageFuture.then((list) {
         if (list.isNotEmpty) {
           list[sectionIndex].imageDetail[index].isDownloaded = isDownloaded;
+          list[sectionIndex].imageDetail[index].localPath = localPath;
         }
       });
     });
@@ -103,13 +106,20 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
     });
   }
 
-  void _navigateToAnotherScreen(BuildContext context, String imageUrl) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PreviewPurchasedImage(image: imageUrl),
-      ),
-    );
+  void _navigateToImagePreview(BuildContext context, String finalPath) {
+      print('Navigating to image preview at path: $finalPath');
+
+    if (finalPath != null && File(finalPath).existsSync()) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              PreviewPurchasedImage(localImagePath: finalPath),
+        ),
+      );
+    } else {
+      _showToast('Image not found!');
+    }
   }
 
   @override
@@ -138,14 +148,29 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
                       children: [
                         Padding(
                           padding: EdgeInsets.fromLTRB(
-                              5, isFirstItem ? 10 : 30, 10, 8),
-                          child: Text(
-                            purchasedImageList[sectionIndex].purchasedDate,
-                            style: const TextStyle(
-                                fontSize: 20,
-                                color: ConstColors.DIGreen,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: DIConstants.AvertaDemoPE),
+                              10, isFirstItem ? 10 : 30, 10, 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                purchasedImageList[sectionIndex].purchasedDate,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: ConstColors.DIGreen,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: DIConstants.AvertaDemoPE,
+                                ),
+                              ),
+                              Text(
+                                'Download Until ${_calculateDownloadUntilDate(purchasedImageList[sectionIndex].purchasedDate)}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: ConstColors.DIGreen,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: DIConstants.AvertaDemoPE,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         GridView.builder(
@@ -173,8 +198,8 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
                                 children: [
                                   GestureDetector(
                                     onTap: data.isDownloaded ?? false
-                                        ? () => _navigateToAnotherScreen(
-                                            context, data.imageUrl)
+                                        ? () => _navigateToImagePreview(
+                                            context, data.localPath ?? '')
                                         : null,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
@@ -210,5 +235,23 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
                 );
               }
             }));
+  }
+}
+
+String _calculateDownloadUntilDate(String purchasedDate) {
+  try {
+    // Assuming the purchasedDate is in "dd MMM" format, e.g., "25 Jun"
+    final DateFormat dateFormat = DateFormat('dd MMM');
+    DateTime purchasedDateParsed = dateFormat.parse(purchasedDate);
+
+    // Add 15 days to the purchased date
+    DateTime downloadUntilDate =
+        purchasedDateParsed.add(const Duration(days: 15));
+
+    // Format the new date back to "dd MMM"
+    return dateFormat.format(downloadUntilDate);
+  } catch (e) {
+    // If there's an error in parsing the date, fallback to a default message
+    return 'Invalid date';
   }
 }

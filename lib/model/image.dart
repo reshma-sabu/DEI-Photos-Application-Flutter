@@ -7,6 +7,7 @@ class ImageM {
   final String? videoUrl;
   final bool? isVideo;
    bool? isDownloaded;
+   String? localPath;
 
   ImageM({
      this.isSelected,
@@ -17,6 +18,7 @@ class ImageM {
     this.videoUrl,
      this.isVideo,
     this.isDownloaded,
+    this.localPath
   });
 
   factory ImageM.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class ImageM {
       videoUrl: json['videoUrl'],
       isVideo: json['isVideo'],
       isDownloaded: json['isDownloaded'],
+      localPath: json['localPath']
     );
   }
 
@@ -42,6 +45,7 @@ class ImageM {
       'videoUrl': videoUrl,
       'isVideo': isVideo,
       'isDownloaded': isDownloaded,
+      'localPath': localPath
     };
   }
 }

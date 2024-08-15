@@ -25,3 +25,9 @@ Future<void> shareImageFromAssets({
     print('Error sharing image: $e');
   }
 }
+
+Future<void> printSavedImagePath() async {
+  final dir = await getApplicationDocumentsDirectory();
+  final folder = Directory('${dir.path}/MyDownloadedImages');
+  print('Images are saved in: ${folder.path}');
+}
