@@ -93,6 +93,8 @@ flutter:
     - assets/offers_dropdown.json
     - assets/purchased_images.json
     - assets/images/cart.png
+    - assets/images/backButton.png
+    - assets/images/delete.png
 
   
   fonts:

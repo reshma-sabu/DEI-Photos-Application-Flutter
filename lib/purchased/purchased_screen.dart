@@ -11,11 +11,13 @@ class PurchasedScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.arrow_back,
-              color: ConstColors.DIGreen,
-            )),
+          onPressed: () {},
+          icon: Image.asset(
+            'assets/images/backButton.png',
+            height: 19,
+            width: 10.24,
+          ),
+        ),
         title: const Text(
           'Photo Booth',
           style: TextStyle(

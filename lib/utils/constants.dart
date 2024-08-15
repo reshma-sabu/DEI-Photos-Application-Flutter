@@ -15,5 +15,10 @@ class DIConstants {
   static const String total = 'Total:';
   static const String imageSaveCancelledMessage = 'Image save cancelled';
   static const String imageSaveFailedMessage = 'Failed to download image';
+  static const String purchaseAll = 'PURCHASE ALL';
+  static const String SubTotalText = 'Sub Total';
+  static const String DiscountText = 'Discount';
+  static const String TotalText = 'Total';
+
 
 }

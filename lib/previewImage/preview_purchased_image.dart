@@ -16,9 +16,10 @@ class PreviewPurchasedImage extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: ConstColors.DIGreen,
+          icon: Image.asset(
+            'assets/images/backButton.png',
+            height: 19,
+            width: 10.24,
           ),
         ),
         title: const Text(
@@ -40,7 +41,7 @@ class PreviewPurchasedImage extends StatelessWidget {
                 width: 24,
               ),
               onPressed: () {
-                _shareImage(localImagePath); // Share the image from local storage
+                _shareImage(localImagePath);
               },
             ),
           ),

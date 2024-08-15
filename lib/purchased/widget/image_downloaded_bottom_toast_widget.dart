@@ -15,33 +15,41 @@ class _ImageDownloadedBottomToastWidgetState
     extends State<ImageDownloadedBottomToastWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 73,
-      width: double.infinity,
-      color: ConstColors.DISnackbarYellow,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 42, right: 20),
-        child: Row(
-          children: [
-            Text(
-              widget.message,
-              style: const TextStyle(
+    return DecoratedBox(
+      decoration: const BoxDecoration(
+        color: ConstColors.DISnackbarYellow,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(8),
+          topRight: Radius.circular(8),
+        ),
+      ),
+      child: SizedBox(
+        height: 73,
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 42, right: 20),
+          child: Row(
+            children: [
+              Text(
+                widget.message,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                   fontFamily: DIConstants.AvertaDemoPE,
-                  color: ConstColors.DIWhite),
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(right: 20),
-              child: Image.asset(
-                'assets/images/saveImage.png',
-                height: 24,
-                width: 24,
-                // alignment: AlignmentDirectional.centerEnd,
+                  color: ConstColors.DIWhite,
+                ),
               ),
-            )
-          ],
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: Image.asset(
+                  'assets/images/saveImage.png',
+                  height: 24,
+                  width: 24,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
