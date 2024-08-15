@@ -29,47 +29,50 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
   }
 
   Future<void> _downloadPurchasedImage(
-    int sectionIndex, int index, String _url) async {
-  var random = Random();
-  String message = '';
-  String? finalPath;
+      int sectionIndex, int index, String _url) async {
+    var random = Random();
+    String? finalPath;
 
-  try {
-    final http.Response response = await http.get(Uri.parse(_url));
-    if (response.statusCode == 200) {
-      final dir = await getTemporaryDirectory();
-      var filename = '${dir.path}/DEI_Image${random.nextInt(100)}.png';
-      final file = File(filename);
-      await file.writeAsBytes(response.bodyBytes);
+    try {
+      final http.Response response = await http.get(Uri.parse(_url));
+      if (response.statusCode == 200) {
+        // Get directory based on platform
+        final dir = Platform.isAndroid
+            ? await getExternalStorageDirectory() // Android
+            : await getApplicationDocumentsDirectory(); // iOS
+        var filename = '${dir?.path}/DEI_Image${random.nextInt(100)}.png';
+        final file = File(filename);
+        await file.writeAsBytes(response.bodyBytes);
 
-      final params = SaveFileDialogParams(sourceFilePath: file.path);
-      finalPath = await FlutterFileDialog.saveFile(params: params);
+        final params = SaveFileDialogParams(sourceFilePath: file.path);
+        await FlutterFileDialog.saveFile(params: params);
+        finalPath = file.path;
 
-      if (finalPath != null) {
-        setState(() {
-          _updateDownloadedStatus(context, sectionIndex, index, true, finalPath);
-        });
-        _showToast(DIConstants.imageSavedMsg);
+        if (finalPath != null) {
+          setState(() {
+            _updateDownloadedStatus(
+                context, sectionIndex, index, true, finalPath);
+          });
+          _showToast(DIConstants.imageSavedMsg);
+        } else {
+          setState(() {
+            _updateDownloadedStatus(context, sectionIndex, index, false, null);
+          });
+          _showToast(DIConstants.imageSaveCancelledMessage);
+        }
       } else {
         setState(() {
           _updateDownloadedStatus(context, sectionIndex, index, false, null);
         });
-        _showToast(DIConstants.imageSaveCancelledMessage);
+        _showToast(DIConstants.imageSaveFailedMessage);
       }
-    } else {
+    } catch (e) {
       setState(() {
         _updateDownloadedStatus(context, sectionIndex, index, false, null);
       });
-      _showToast(DIConstants.imageSaveFailedMessage);
+      _showToast("Something went wrong");
     }
-  } catch (e) {
-    message = 'Error: ${e.toString()}';
-    setState(() {
-      _updateDownloadedStatus(context, sectionIndex, index, false, null);
-    });
-    _showToast(message);
   }
-}
 
   void _updateDownloadedStatus(BuildContext context, int sectionIndex,
       int index, bool isDownloaded, String? localPath) {
@@ -106,19 +109,22 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
     });
   }
 
-  void _navigateToImagePreview(BuildContext context, String finalPath) {
-      print('Navigating to image preview at path: $finalPath');
-
-    if (finalPath != null && File(finalPath).existsSync()) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              PreviewPurchasedImage(localImagePath: finalPath),
-        ),
-      );
+  void _navigateToImagePreview(BuildContext context, String finalPath) async {
+    if (finalPath != null) {
+      File file = File(finalPath);
+      if (await file.exists()) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                PreviewPurchasedImage(localImagePath: finalPath),
+          ),
+        );
+      } else {
+        _showToast('Image not found!');
+      }
     } else {
-      _showToast('Image not found!');
+      _showToast('No image selected!');
     }
   }
 
