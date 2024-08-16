@@ -40,7 +40,7 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
         final dir = Platform.isAndroid
             ? await getExternalStorageDirectory() // Android
             : await getApplicationDocumentsDirectory(); // iOS
-       //time format
+        //time format
         final now = DateTime.now();
         final dateFormat = DateFormat('yyyy MMM dd');
         final timeFormat = DateFormat('h:mm a'); // 12-hour format with AM/PM
@@ -140,115 +140,152 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: FutureBuilder<List<PurchasedM>>(
-            future: _purchasedImageFuture,
-            builder: (BuildContext context,
-                AsyncSnapshot<List<PurchasedM>> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text('No data available'));
-              } else {
-                final purchasedImageList = snapshot.data!;
-                return ListView.builder(
-                  itemCount: purchasedImageList.length,
-                  itemBuilder: (context, sectionIndex) {
-                    final isFirstItem = sectionIndex == 0;
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(
-                              10, isFirstItem ? 10 : 30, 10, 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                purchasedImageList[sectionIndex].purchasedDate,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: ConstColors.DIGreen,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: DIConstants.AvertaDemoPE,
+      padding: const EdgeInsets.all(10.0),
+      child: FutureBuilder<List<PurchasedM>>(
+        future: _purchasedImageFuture,
+        builder:
+            (BuildContext context, AsyncSnapshot<List<PurchasedM>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            final heightOfScreen = MediaQuery.of(context).size.height;
+            return Center(
+              child: SizedBox(
+                height: heightOfScreen * 0.3,
+                child: const Text(
+                  DIConstants.NoPurchasedPhotosText,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: DIConstants.AvertaDemoPE,
+                      color: ConstColors.DIGreen),
+                ),
+              ),
+            );
+          } else {
+            final purchasedImageList = snapshot.data!;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 10.0),
+                    child: Text(
+                      DIConstants.PurchasedValidity,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: DIConstants.AvertaDemoPE,
+                        color: ConstColors.DIGreen,
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: purchasedImageList.length,
+                    itemBuilder: (context, sectionIndex) {
+                      final isFirstItem = sectionIndex == 0;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                10, isFirstItem ? 10 : 30, 10, 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  purchasedImageList[sectionIndex]
+                                      .purchasedDate,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: ConstColors.DIGreen,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: DIConstants.AvertaDemoPE,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'Download Until ${_calculateDownloadUntilDate(purchasedImageList[sectionIndex].purchasedDate)}',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: ConstColors.DIGreen,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: DIConstants.AvertaDemoPE,
+                                Text(
+                                  'Download Until ${_calculateDownloadUntilDate(purchasedImageList[sectionIndex].purchasedDate)}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: ConstColors.DIGreen,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: DIConstants.AvertaDemoPE,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: purchasedImageList[sectionIndex]
-                              .imageDetail
-                              .length,
-                          gridDelegate:
-                              SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent:
-                                // Max extent of each cell
-                                screenWidth / 3,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
-                            // Ensure square cells
-                            childAspectRatio: 1,
-                          ),
-                          itemBuilder: (context, index) {
-                            final data = purchasedImageList[sectionIndex]
-                                .imageDetail[index];
-                            return SizedBox(
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  GestureDetector(
-                                    onTap: data.isDownloaded ?? false
-                                        ? () => _navigateToImagePreview(
-                                            context, data.localPath ?? '')
-                                        : null,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: Image.network(
-                                        data.imageUrl,
-                                        fit: BoxFit.cover,
-                                        width: 112,
-                                        height: 112,
+                          GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: purchasedImageList[sectionIndex]
+                                .imageDetail
+                                .length,
+                            gridDelegate:
+                                SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent:
+                                  // Max extent of each cell
+                                  screenWidth / 3,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                              // Ensure square cells
+                              childAspectRatio: 1,
+                            ),
+                            itemBuilder: (context, index) {
+                              final data = purchasedImageList[sectionIndex]
+                                  .imageDetail[index];
+                              return SizedBox(
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: data.isDownloaded ?? false
+                                          ? () => _navigateToImagePreview(
+                                              context, data.localPath ?? '')
+                                          : null,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: Image.network(
+                                          data.imageUrl,
+                                          fit: BoxFit.cover,
+                                          width: 112,
+                                          height: 112,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  if (data.isDownloaded != null &&
-                                      !data.isDownloaded!)
-                                    GestureDetector(
-                                      onTap: () {
-                                        _downloadPurchasedImage(
-                                            sectionIndex, index, data.imageUrl);
-                                      },
-                                      child: Image.asset(
-                                        'assets/images/downloadIcon.png',
-                                        height: 50,
-                                        width: 50,
-                                      ),
-                                    )
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }
-            }));
+                                    if (data.isDownloaded != null &&
+                                        !data.isDownloaded!)
+                                      GestureDetector(
+                                        onTap: () {
+                                          _downloadPurchasedImage(sectionIndex,
+                                              index, data.imageUrl);
+                                        },
+                                        child: Image.asset(
+                                          'assets/images/downloadIcon.png',
+                                          height: 50,
+                                          width: 50,
+                                        ),
+                                      )
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ],
+            );
+          }
+        },
+      ),
+    );
   }
 }
 

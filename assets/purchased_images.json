@@ -16,7 +16,14 @@
                 "imageUrl": "https://picsum.photos/200/300/?blur=2",
                 "isDownloaded": false,
                  "localPath": ""
+              },
+              {
+                "imageUrl": "https://picsum.photos/200/300?grayscale",
+                "isDownloaded": false,
+                 "localPath": ""
               }
+            
+             
         ]
     },
     {
@@ -56,7 +63,17 @@
                 "imageUrl": "https://picsum.photos/id/870/200/300?grayscale&blur=2",
                 "isDownloaded": false,
                  "localPath": ""
-              }
+              },
+              {
+                "imageUrl": "https://picsum.photos/200/300?grayscale",
+                "isDownloaded": false,
+                 "localPath": ""
+              },
+              {
+                "isDownloaded": false,
+                "imageUrl": "https://picsum.photos/seed/picsum/200/300",
+                "localPath": ""
+            }
         ]
     }
        

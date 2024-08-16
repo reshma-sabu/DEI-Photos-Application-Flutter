@@ -19,6 +19,7 @@ class DIConstants {
   static const String SubTotalText = 'Sub Total';
   static const String DiscountText = 'Discount';
   static const String TotalText = 'Total';
+  static const String NoPurchasedPhotosText = 'You have not purchased any photos yet!';
 
 
 }
