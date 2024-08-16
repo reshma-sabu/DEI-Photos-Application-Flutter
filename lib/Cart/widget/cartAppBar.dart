@@ -9,7 +9,7 @@ class CartAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0,
-      backgroundColor: const Color(0xFFFFFFFF),
+      // backgroundColor: const Color(0xFFFFFFFF),
       leading: IconButton(
         icon: Image.asset('assets/images/backButton.png', height: 19, width: 10.24,),
         onPressed: () {
