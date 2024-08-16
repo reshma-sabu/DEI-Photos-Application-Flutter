@@ -1,4 +1,5 @@
 import 'package:atlantis_di_photos_app/offers/offers_screen.dart';
+import 'package:atlantis_di_photos_app/store/screens/store_screen.dart';
 import 'package:atlantis_di_photos_app/utils/colors.dart';
 import 'package:atlantis_di_photos_app/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class PurchasedTabScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const DefaultTabController(
-      length: 3,
+      length: 2,
       child: Column(
         children: [
           Padding(
@@ -42,16 +43,16 @@ class PurchasedTabScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Tab(
-                        child: Align(
-                          child: Text(
-                            "Offers",
-                            style: TextStyle(
-                                fontFamily: DIConstants.AvertaDemoPE,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                      ),
+                      // Tab(
+                      //   child: Align(
+                      //     child: Text(
+                      //       "Offers",
+                      //       style: TextStyle(
+                      //           fontFamily: DIConstants.AvertaDemoPE,
+                      //           fontWeight: FontWeight.w400),
+                      //     ),
+                      //   ),
+                      // ),
                       Tab(
                         child: Align(
                           child: Text(
@@ -68,23 +69,11 @@ class PurchasedTabScreen extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 5),
-            child: Text(
-              DIConstants.PurchasedValidity,
-              style: TextStyle(
-                  fontSize: 12,
-                  fontFamily: DIConstants.AvertaDemoPE,
-                  color: ConstColors.DIGreen,
-                  fontWeight: FontWeight.w400),
-              textAlign: TextAlign.start,
-            ),
-          ),
+          
           Expanded(
             child: TabBarView(
               children: [
-                Center(child: Text("Store Content")),
-                OffersScreen(),
+                StoreScreen(),
                 DownloadImageWidget(),
               ],
             ),
