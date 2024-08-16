@@ -40,7 +40,15 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
         final dir = Platform.isAndroid
             ? await getExternalStorageDirectory() // Android
             : await getApplicationDocumentsDirectory(); // iOS
-        var filename = '${dir?.path}/DEI_Image${random.nextInt(100)}.png';
+       //time format
+        final now = DateTime.now();
+        final dateFormat = DateFormat('yyyy MMM dd');
+        final timeFormat = DateFormat('h:mm a'); // 12-hour format with AM/PM
+        final datePart = dateFormat.format(now);
+        final timePart = timeFormat.format(now);
+        var filename = '${dir?.path}/DEI_Image_${datePart}_${timePart}.png';
+
+        // var filename = '${dir?.path}/DEI_Image_$filename.png';
         final file = File(filename);
         await file.writeAsBytes(response.bodyBytes);
 

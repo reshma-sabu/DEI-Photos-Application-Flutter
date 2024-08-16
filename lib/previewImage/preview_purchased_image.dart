@@ -52,7 +52,7 @@ class PreviewPurchasedImage extends StatelessWidget {
           padding: const EdgeInsets.only(top: 20.0),
           child: Image.file(
             File(localImagePath), // Load the image from the local file
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
             width: double.infinity,
             height: double.infinity,
           ),
