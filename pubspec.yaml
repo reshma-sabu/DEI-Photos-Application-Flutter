@@ -96,6 +96,7 @@ flutter:
     - assets/images/cart.png
     - assets/images/backButton.png
     - assets/images/delete.png
+    - assets/images/done icon.png
 
   
   fonts:

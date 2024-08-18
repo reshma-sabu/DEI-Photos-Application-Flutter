@@ -11,12 +11,15 @@ class CartAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       // backgroundColor: const Color(0xFFFFFFFF),
       leading: IconButton(
-        icon: Image.asset('assets/images/backButton.png', height: 19, width: 10.24,),
+        icon: Image.asset(
+          'assets/images/backButton.png',
+          height: 19,
+          width: 10.24,
+        ),
         onPressed: () {
           Navigator.of(context).pop();
         },
       ),
-      centerTitle: true,
       title: const Column(
         children: [
           Text(
@@ -27,20 +30,11 @@ class CartAppBar extends StatelessWidget implements PreferredSizeWidget {
                 color: ConstColors.DIGreen,
                 fontSize: 28),
           ),
-          SizedBox(height: 6),
-          Text(
-            DIConstants.PurchasedValidity,
-            style: TextStyle(
-                fontFamily: DIConstants.AvertaDemoPE,
-                fontWeight: FontWeight.w400,
-                color: ConstColors.DIGreen,
-                fontSize: 12),
-          ),
         ],
       ),
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight + 20);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

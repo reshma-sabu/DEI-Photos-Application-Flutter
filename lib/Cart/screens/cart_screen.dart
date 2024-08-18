@@ -1,4 +1,5 @@
 import 'package:atlantis_di_photos_app/Cart/widget/cartAppBar.dart';
+import 'package:atlantis_di_photos_app/Cart/widget/payment_success_widget.dart';
 import 'package:atlantis_di_photos_app/utils/colors.dart';
 import 'package:atlantis_di_photos_app/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,20 @@ class CartScreen extends StatelessWidget {
       appBar: const CartAppBar(),
       body: Column(
         children: [
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 10.0),
+              child: Text(
+                DIConstants.PurchasedValidity,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: DIConstants.AvertaDemoPE,
+                  color: ConstColors.DIGreen,
+                ),
+              ),
+            ),
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: cartItems.length,
@@ -48,7 +63,8 @@ class CartScreen extends StatelessWidget {
                         color: Color(0xFFECECEC),
                       ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 10.0, top: 8, bottom: 8, right: 10),
+                      padding: const EdgeInsets.only(
+                          left: 10.0, top: 8, bottom: 8, right: 10),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -63,16 +79,12 @@ class CartScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                              width: 16), // Add spacing between image and text
-
-                          // Column for price and date, center aligned
+                          const SizedBox(width: 16),
+                          // Column for price and date
                           Expanded(
                             child: Column(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.center, // Center vertically
-                              crossAxisAlignment: CrossAxisAlignment
-                                  .start, // Align text to the start (left)
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   item['price'],
@@ -83,9 +95,7 @@ class CartScreen extends StatelessWidget {
                                     color: ConstColors.DIGreen,
                                   ),
                                 ),
-                                const SizedBox(
-                                    height:
-                                        8), // Add space between price and date
+                                const SizedBox(height: 8),
                                 Text(
                                   item['date'],
                                   style: const TextStyle(
@@ -98,7 +108,6 @@ class CartScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-
                           Center(
                             child: GestureDetector(
                               onTap: () {
@@ -114,20 +123,20 @@ class CartScreen extends StatelessWidget {
                         ],
                       ),
                     ),
+                    // Divider for each row
                     const Divider(
                       thickness: 1,
                       color: Color(0xFFECECEC),
-                    ), // Divider for each row
+                    ),
                   ],
                 );
               },
             ),
           ),
-          
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Container(
-              height: 140,
+              // height: 140,
               color: const Color(0xFFE0F5FA),
               child: const Padding(
                 padding: EdgeInsets.all(16.0),
@@ -196,7 +205,7 @@ class CartScreen extends StatelessWidget {
             padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
             child: SizedBox(
               width: double.infinity,
-              height: 55,
+              height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF0D7B8A),
@@ -204,7 +213,9 @@ class CartScreen extends StatelessWidget {
                     borderRadius: BorderRadius.zero,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  PaymentSuccessOverlay.show(context);
+                },
                 child: const Text(DIConstants.purchaseAll,
                     style: TextStyle(
                         fontSize: 18,
@@ -214,9 +225,6 @@ class CartScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 20,
-          )
         ],
       ),
     );
