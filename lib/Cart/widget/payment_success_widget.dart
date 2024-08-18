@@ -63,7 +63,7 @@ class PaymentSuccessOverlay {
                     const SizedBox(height: 30,),
                     SizedBox(
                       width: DIConstants.getScreenWidth(context) - 40,
-                      height: 55,
+                      height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF0D7B8A),
@@ -83,7 +83,7 @@ class PaymentSuccessOverlay {
                     const SizedBox(height: 10,),
                     SizedBox(
                       width: DIConstants.getScreenWidth(context) - 40,
-                      height: 55,
+                      height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFFFFFFF),

@@ -97,6 +97,7 @@ flutter:
     - assets/images/backButton.png
     - assets/images/delete.png
     - assets/images/done icon.png
+    - assets/images/applePay.png
 
   
   fonts:

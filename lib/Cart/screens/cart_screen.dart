@@ -1,4 +1,5 @@
 import 'package:atlantis_di_photos_app/Cart/widget/cartAppBar.dart';
+import 'package:atlantis_di_photos_app/Cart/widget/payment_methods_widget.dart';
 import 'package:atlantis_di_photos_app/Cart/widget/payment_success_widget.dart';
 import 'package:atlantis_di_photos_app/utils/colors.dart';
 import 'package:atlantis_di_photos_app/utils/constants.dart';
@@ -32,6 +33,16 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final imageSize = screenWidth * 0.25;
+    final fontSizeTitle = screenWidth * 0.05;
+    final fontSizeSubtitle = screenWidth * 0.03;
+    print("imageSize $imageSize");
+    print("fontSizeTitle $fontSizeTitle");
+
+    print("fontSizeSubtitle $fontSizeSubtitle");
+
+
     return Scaffold(
       appBar: const CartAppBar(),
       body: Column(
@@ -64,13 +75,13 @@ class CartScreen extends StatelessWidget {
                       ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 10.0, top: 8, bottom: 8, right: 10),
+                          left: 12.0, top: 8, bottom: 8, right: 12),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            width: 112,
-                            height: 112,
+                            width: imageSize,
+                            height: imageSize,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                               image: DecorationImage(
@@ -88,18 +99,18 @@ class CartScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   item['price'],
-                                  style: const TextStyle(
-                                    fontSize: 24,
+                                  style:  TextStyle(
+                                    fontSize: fontSizeTitle,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: DIConstants.AvertaDemoPE,
                                     color: ConstColors.DIGreen,
                                   ),
                                 ),
-                                const SizedBox(height: 8),
+                                // const SizedBox(height: 8),
                                 Text(
                                   item['date'],
-                                  style: const TextStyle(
-                                    fontSize: 14,
+                                  style:  TextStyle(
+                                    fontSize: fontSizeSubtitle,
                                     fontFamily: DIConstants.AvertaDemoPE,
                                     fontWeight: FontWeight.w600,
                                     color: Color(0xFF757575),
@@ -138,7 +149,7 @@ class CartScreen extends StatelessWidget {
             child: Container(
               // height: 140,
               color: const Color(0xFFE0F5FA),
-              child: const Padding(
+              child:  Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,13 +159,13 @@ class CartScreen extends StatelessWidget {
                       children: [
                         Text(DIConstants.SubTotalText,
                             style: TextStyle(
-                                fontSize: 20,
+                                fontSize: fontSizeTitle,
                                 fontFamily: DIConstants.AvertaDemoPE,
                                 fontWeight: FontWeight.w700,
                                 color: ConstColors.DIBGrey)),
                         Text("46.00 AED",
                             style: TextStyle(
-                                fontSize: 20,
+                                fontSize: fontSizeTitle,
                                 fontFamily: DIConstants.AvertaDemoPE,
                                 fontWeight: FontWeight.w700,
                                 color: ConstColors.DIGreen)),
@@ -166,13 +177,13 @@ class CartScreen extends StatelessWidget {
                       children: [
                         Text(DIConstants.DiscountText,
                             style: TextStyle(
-                                fontSize: 20,
+                                fontSize: fontSizeTitle,
                                 fontFamily: DIConstants.AvertaDemoPE,
                                 fontWeight: FontWeight.w700,
                                 color: ConstColors.DIBGrey)),
                         Text("20.00 AED",
                             style: TextStyle(
-                                fontSize: 20,
+                                fontSize: fontSizeTitle,
                                 fontFamily: DIConstants.AvertaDemoPE,
                                 fontWeight: FontWeight.w700,
                                 color: Color(0xFFFF5959))),
@@ -184,13 +195,13 @@ class CartScreen extends StatelessWidget {
                       children: [
                         Text(DIConstants.TotalText,
                             style: TextStyle(
-                                fontSize: 20,
+                                fontSize: fontSizeTitle,
                                 fontFamily: DIConstants.AvertaDemoPE,
                                 fontWeight: FontWeight.w700,
                                 color: ConstColors.DIBGrey)),
                         Text("26.00 AED",
                             style: TextStyle(
-                                fontSize: 20,
+                                fontSize: fontSizeTitle,
                                 fontFamily: DIConstants.AvertaDemoPE,
                                 fontWeight: FontWeight.w700,
                                 color: ConstColors.DIGreen)),
@@ -214,7 +225,7 @@ class CartScreen extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  PaymentSuccessOverlay.show(context);
+                  PaymentMethodsOverlay.show(context);
                 },
                 child: const Text(DIConstants.purchaseAll,
                     style: TextStyle(
