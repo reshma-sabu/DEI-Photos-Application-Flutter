@@ -51,6 +51,7 @@ dependencies:
   open_filex: ^4.5.0
   dio: ^5.6.0
   url_launcher: ^6.3.0
+  flutter_svg: ^2.0.10+1
 
 dev_dependencies:
   flutter_test:
@@ -98,6 +99,8 @@ flutter:
     - assets/images/delete.png
     - assets/images/done icon.png
     - assets/images/applePay.png
+    - assets/cart_details.json
+    - assets/images/cart_icon.svg
 
   
   fonts:

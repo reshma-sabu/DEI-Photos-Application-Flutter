@@ -1,7 +1,9 @@
+import 'package:atlantis_di_photos_app/Cart/screens/cart_screen.dart';
 import 'package:atlantis_di_photos_app/purchased/purchased_tab_screen.dart';
 import 'package:atlantis_di_photos_app/utils/colors.dart';
 import 'package:atlantis_di_photos_app/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class PurchasedScreen extends StatelessWidget {
   const PurchasedScreen({super.key});
@@ -32,12 +34,19 @@ class PurchasedScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: IconButton(
-              icon: Image.asset(
-                'assets/images/cart.png',
+              icon: SvgPicture.asset(
+                'assets/images/cart_icon.svg',
                 height: 21.21,
                 width: 24,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CartScreen(),
+                  ),
+                );
+              },
             ),
           ),
         ],
