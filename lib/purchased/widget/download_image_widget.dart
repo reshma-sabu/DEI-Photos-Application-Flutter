@@ -30,7 +30,6 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
 
   Future<void> _downloadPurchasedImage(
       int sectionIndex, int index, String _url) async {
-    var random = Random();
     String? finalPath;
 
     try {

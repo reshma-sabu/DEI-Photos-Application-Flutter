@@ -39,9 +39,8 @@ class _ImageDownloadedBottomToastWidgetState
                   color: ConstColors.DIWhite,
                 ),
               ),
-              const Spacer(),
               Padding(
-                padding: const EdgeInsets.only(right: 20),
+                padding: const EdgeInsets.only(left: 20),
                 child: Image.asset(
                   'assets/images/saveImage.png',
                   height: 24,

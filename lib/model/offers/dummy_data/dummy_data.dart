@@ -6,13 +6,14 @@ final imagesList = [
   PurchasedM(purchasedDate: "Jun 10", imageDetail: [
     ImageM(
         isDownloaded: false,
-        imageUrl: 'https://picsum.photos/seed/picsum/200/300'),
+        imageUrl: 'https://picsum.photos/seed/picsum/200/300', id: '1'),
+        
     ImageM(
         isDownloaded: false,
-        imageUrl: 'https://picsum.photos/200/300?grayscale'),
+        imageUrl: 'https://picsum.photos/200/300?grayscale', id: '2'),
     ImageM(
         isDownloaded: false,
-        imageUrl: 'https://picsum.photos/200/300/?blur=2'),
+        imageUrl: 'https://picsum.photos/200/300/?blur=2', id: '3'),
         
   ]),
   // PurchasedM(purchasedDate: "Jun 7", imageDetail: [
