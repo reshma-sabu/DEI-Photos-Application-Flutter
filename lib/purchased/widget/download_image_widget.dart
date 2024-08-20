@@ -175,7 +175,7 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
                       DIConstants.PurchasedValidity,
                       style: TextStyle(
                         fontSize: 12,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w500,
                         fontFamily: DIConstants.AvertaDemoPE,
                         color: ConstColors.DIGreen,
                       ),
