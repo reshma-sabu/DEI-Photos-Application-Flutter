@@ -4,15 +4,31 @@ import 'package:flutter/material.dart';
 
 class PaymentSuccessOverlay {
   static void show(BuildContext context) {
-     OverlayEntry? overlayEntry;
-    
+    OverlayEntry? overlayEntry;
+    double fontSizeSuccessTitle = 0.0;
+    double fontSizeSubtitle = 0.0;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    if (screenHeight > 800 || screenHeight > 600) {
+// For medium screens
+      fontSizeSuccessTitle = screenWidth * 0.09;
+      fontSizeSubtitle = screenWidth * 0.045;
+      print(">? 800");
+    } else if (screenHeight > 400 || screenHeight > 600) {
+      //small screens
+      fontSizeSuccessTitle = screenWidth * 0.083;
+      fontSizeSubtitle = screenWidth * 0.045;
+      print(">? 400");
+    }
+
     overlayEntry = OverlayEntry(
       builder: (context) => Stack(
         children: [
-           ModalBarrier(
-          color: Colors.black.withOpacity(0.3),
-          dismissible: false,
-        ),
+          ModalBarrier(
+            color: Colors.black.withOpacity(0.3),
+            dismissible: false,
+          ),
           Positioned(
             bottom: 0,
             left: 0,
@@ -27,42 +43,52 @@ class PaymentSuccessOverlay {
                 ),
                 child: Column(
                   children: [
-                    const SizedBox(height: 20,),
-                    Image.asset("assets/images/done icon.png", height: 43, width: 43,),
-                    const Center(
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Image.asset(
+                      "assets/images/done icon.png",
+                      height: 43,
+                      width: 43,
+                    ),
+                    Center(
                       child: Text(
                         DIConstants.PaymentSuccessText,
                         style: TextStyle(
-                            fontSize: 40,
+                            fontSize: fontSizeSuccessTitle,
                             color: ConstColors.DIGreen,
                             fontFamily: DIConstants.SkiaFont,
                             fontWeight: FontWeight.w400),
                       ),
                     ),
-                    const SizedBox(height: 15,),
-                     const Center(
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Center(
                       child: Text(
                         DIConstants.PaymentSuccessValidityText1,
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: fontSizeSubtitle,
                             color: ConstColors.DIGreen,
                             fontFamily: DIConstants.AvertaDemoPE,
                             fontWeight: FontWeight.w400),
                       ),
                     ),
-                    const Center(
+                    Center(
                       child: Text(
                         DIConstants.PaymentSuccessValidityText2,
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: fontSizeSubtitle,
                             color: ConstColors.DIGreen,
                             fontFamily: DIConstants.AvertaDemoPE,
                             fontWeight: FontWeight.w700),
                       ),
                     ),
-                    const SizedBox(height: 30,),
+                    const SizedBox(
+                      height: 30,
+                    ),
                     SizedBox(
-                      width: DIConstants.getScreenWidth(context) - 40,
+                      width: DIConstants.getScreenWidth(context) - 45,
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -80,17 +106,19 @@ class PaymentSuccessOverlay {
                                 fontWeight: FontWeight.w600)),
                       ),
                     ),
-                    const SizedBox(height: 10,),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     SizedBox(
-                      width: DIConstants.getScreenWidth(context) - 40,
+                      width: DIConstants.getScreenWidth(context) - 45,
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFFFFFFF),
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.zero,
-                            side: BorderSide(width: 1, color: ConstColors.DIGreen),
-                            
+                            side: BorderSide(
+                                width: 1, color: ConstColors.DIGreen),
                           ),
                         ),
                         onPressed: () {
@@ -104,7 +132,9 @@ class PaymentSuccessOverlay {
                                 fontWeight: FontWeight.w600)),
                       ),
                     ),
-                    const SizedBox(height: 15,)
+                    const SizedBox(
+                      height: 15,
+                    )
                   ],
                 ),
               ),
