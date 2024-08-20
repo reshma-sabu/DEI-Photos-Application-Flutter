@@ -52,10 +52,10 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
         await file.writeAsBytes(response.bodyBytes);
 
         final params = SaveFileDialogParams(sourceFilePath: file.path);
-        await FlutterFileDialog.saveFile(params: params);
+        final dialogResponse = await FlutterFileDialog.saveFile(params: params);
         finalPath = file.path;
 
-        if (finalPath != null) {
+        if (dialogResponse != null) {
           setState(() {
             _updateDownloadedStatus(
                 context, sectionIndex, index, true, finalPath);
@@ -150,7 +150,7 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             final heightOfScreen = MediaQuery.of(context).size.height;
-            //no purchased photo message 
+            //no purchased photo message
             return Center(
               child: SizedBox(
                 height: heightOfScreen * 0.3,
