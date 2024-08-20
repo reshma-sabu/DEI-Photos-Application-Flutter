@@ -16,6 +16,10 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   late Future<List<ImageM>> _imageDetailFuture;
+  List<ImageM>? cartItems;
+  double imageSize = 0.0;
+  double fontSizeTitle = 0.0;
+  double fontSizeSubtitle = 0.0;
 
   @override
   void initState() {
@@ -23,17 +27,69 @@ class _CartScreenState extends State<CartScreen> {
     _imageDetailFuture = getCartDetails();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  void _removeCartItem(String id) {
+    setState(() {
+      cartItems?.removeWhere((item) => item.id == id);
+    });
+  }
+
+  void dynamicScreenSizeFunction() {
     final screenWidth = MediaQuery.of(context).size.width;
-    final imageSize = screenWidth * 0.25;
-    final fontSizeTitle = screenWidth * 0.05;
-    final fontSizeSubtitle = screenWidth * 0.03;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    if (screenHeight > 900) {
+// For large screens
+//13 pro max
+      imageSize = screenWidth * 0.26;
+      fontSizeTitle = screenWidth * 0.045;
+      fontSizeSubtitle = screenWidth * 0.03;
+      print("> 850");
+    } else if (screenHeight > 860) {
+//11 pro max
+      imageSize = screenWidth * 0.25;
+      fontSizeTitle = screenWidth * 0.045;
+      fontSizeSubtitle = screenWidth * 0.03;
+      print("> 850");
+    }
+    //iphone 15 | 15 Pro
+    else if (screenHeight > 800) {
+// For medium screens
+      imageSize = screenWidth * 0.24;
+      fontSizeTitle = screenWidth * 0.046;
+      fontSizeSubtitle = screenWidth * 0.026;
+      print("> 800");
+    }
+    //iphone 6s
+    else if (screenHeight > 400) {
+      imageSize = screenWidth * 0.225;
+      fontSizeTitle = screenWidth * 0.047;
+      fontSizeSubtitle = screenWidth * 0.028;
+      print("> 400");
+    } else {
+// For smaller screens
+      imageSize = screenWidth * 0.20;
+      fontSizeTitle = screenWidth * 0.04;
+      fontSizeSubtitle = screenWidth * 0.02;
+      print("others");
+    }
+    print("screen width of current device $screenWidth");
+    print("screen height of current device $screenHeight");
     print("imageSize $imageSize");
     print("fontSizeTitle $fontSizeTitle");
-
     print("fontSizeSubtitle $fontSizeSubtitle");
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    // final screenWidth = MediaQuery.of(context).size.width;
+    // final imageSize = screenWidth * 0.25;
+    // final fontSizeTitle = screenWidth * 0.05;
+    // final fontSizeSubtitle = screenWidth * 0.03;
+    // print("imageSize $imageSize");
+    // print("fontSizeTitle $fontSizeTitle");
+
+    // print("fontSizeSubtitle $fontSizeSubtitle");
+    dynamicScreenSizeFunction();
     return FutureBuilder<List<ImageM>>(
         future: _imageDetailFuture,
         builder: (BuildContext context, AsyncSnapshot<List<ImageM>> snapshot) {
@@ -42,9 +98,23 @@ class _CartScreenState extends State<CartScreen> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            // return Center(child: Text('Error: ${snapshot.error}'));
+            final heightOfScreen = MediaQuery.of(context).size.height;
+            return Center(
+              child: SizedBox(
+                height: heightOfScreen * 0.3,
+                child: const Text(
+                  DIConstants.EmptyCartText,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: DIConstants.AvertaDemoPE,
+                      color: ConstColors.DIGreen),
+                ),
+              ),
+            );
           } else {
-            final cartItems = snapshot.data!;
+            cartItems = snapshot.data!;
             return Scaffold(
               appBar: const CartAppBar(),
               body: Column(
@@ -56,18 +126,18 @@ class _CartScreenState extends State<CartScreen> {
                         DIConstants.PurchasedValidity,
                         style: TextStyle(
                           fontSize: 12,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w500,
                           fontFamily: DIConstants.AvertaDemoPE,
-                          color: ConstColors.DIGreen,
+                          color: Color(0xFF0D7B8A),
                         ),
                       ),
                     ),
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: cartItems.length,
+                      itemCount: cartItems?.length,
                       itemBuilder: (context, index) {
-                        final item = cartItems[index];
+                        final item = cartItems?[index];
                         return Column(
                           children: [
                             if (index == 0)
@@ -77,7 +147,7 @@ class _CartScreenState extends State<CartScreen> {
                               ),
                             Padding(
                               padding: const EdgeInsets.only(
-                                  left: 12.0, top: 8, bottom: 8, right: 18),
+                                  left: 12.0, top: 5, bottom: 5, right: 18),
                               child: Flex(
                                 direction: Axis.horizontal,
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -89,7 +159,7 @@ class _CartScreenState extends State<CartScreen> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
                                       image: DecorationImage(
-                                        image: NetworkImage(item.imageUrl),
+                                        image: NetworkImage(item!.imageUrl),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -122,7 +192,7 @@ class _CartScreenState extends State<CartScreen> {
                                             fontSize: fontSizeSubtitle,
                                             fontFamily:
                                                 DIConstants.AvertaDemoPE,
-                                            fontWeight: FontWeight.w600,
+                                            fontWeight: FontWeight.w700,
                                             color: Color(0xFF757575),
                                           ),
                                         ),
@@ -132,7 +202,8 @@ class _CartScreenState extends State<CartScreen> {
                                   Center(
                                     child: GestureDetector(
                                       onTap: () {
-                                        print("delete ${item.id}");
+                                        print(item?.id);
+                                        _removeCartItem(item!.id);
                                       },
                                       child: Image.asset(
                                         'assets/images/delete.png',

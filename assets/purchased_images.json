@@ -4,24 +4,24 @@
         "imageDetail": [
             {
                 "isDownloaded": false,
-                "imageUrl": "https://picsum.photos/seed/picsum/200/300",
+                "imageUrl": "https://picsum.photos/id/237/200/300",
                 "localPath": "",
                 "id": "kjfw"
             },
             {
-                "imageUrl": "https://picsum.photos/200/300?grayscale",
+                "imageUrl": "https://picsum.photos/id/238/200/300",
                 "isDownloaded": false,
                  "localPath": "",
                  "id": "ejwhjdh78"
               },
               {
-                "imageUrl": "https://picsum.photos/200/300/?blur=2",
+                "imageUrl": "https://picsum.photos/id/239/200/300",
                 "isDownloaded": false,
                  "localPath": "",
                  "id": "edwewfwefwf"
               },
               {
-                "imageUrl": "https://picsum.photos/200/300?grayscale",
+                "imageUrl": "https://picsum.photos/id/236/200/300",
                 "isDownloaded": false,
                  "localPath": "",
                  "id": "kdcskjhkhd"
@@ -35,18 +35,18 @@
         "imageDetail": [
             {
                 "isDownloaded": false,
-                "imageUrl": "https://picsum.photos/id/237/200/300",
+                "imageUrl": "https://picsum.photos/id/235/200/300",
                  "localPath": "",
                   "id": "kdcskjhkhdew"
             },
             {
-                "imageUrl": "https://picsum.photos/seed/picsum/200/300",
+                "imageUrl": "https://picsum.photos/id/870/200/300?grayscale&blur=2",
                 "isDownloaded": false,
                  "localPath": "",
                   "id": "ksaDdcskjhkhd"
               },
               {
-                "imageUrl": "https://picsum.photos/200/300?grayscale",
+                "imageUrl": "https://picsum.photos/id/872/200/300?grayscale&blur=2",
                 "isDownloaded": false,
                  "localPath": "",
                   "id": "kdcskjhkhdKJEWDH"
@@ -58,7 +58,7 @@
         "imageDetail": [
             {
                 "isDownloaded": false,
-                "imageUrl": "https://picsum.photos/200/300/?blur=2",
+                "imageUrl": "https://picsum.photos/id/874/200/300?grayscale&blur=2",
                  "localPath": "",
                   "id": "kdcskjhkhjdwbcdsj32"
             },

@@ -65,12 +65,27 @@ class PaymentMethodsOverlay {
                         onPressed: () {
                           PaymentSuccessOverlay.show(context);
                         },
-                        child: const Text(DIConstants.PayWithButtonText,
-                            style: TextStyle(
-                                fontSize: 17,
-                                color: Colors.black,
-                                fontFamily: DIConstants.AvertaDemoPE,
-                                fontWeight: FontWeight.w700)),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(DIConstants.PayWithButtonText,
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.black,
+                                      fontFamily: DIConstants.AvertaDemoPE,
+                                      fontWeight: FontWeight.w700)),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Image.asset(
+                                'assets/images/applePay.png',
+                                width: 56,
+                                height: 25.33,
+                              )
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(

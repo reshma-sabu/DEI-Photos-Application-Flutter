@@ -27,10 +27,11 @@ class DIConstants {
   static const String PaymentSuccessValidityText2 = '15 days';
   static const String SelectMethodText = 'Select Method';
   static const String SelectPaymentMethodSubtext = 'Select the payment method from';
-  static const String PayWithButtonText = 'Pay With Apple pay';
+  static const String PayWithButtonText = 'Pay With';
   static const String LinkedCardButtonText = 'LINKED CARD';
   static const String NewCardButtonText = 'NEW CARD';
   static const String CancelText = 'CANCEL';
+  static const String EmptyCartText = 'Your cart is empty';
 
 
 

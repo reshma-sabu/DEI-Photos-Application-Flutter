@@ -26,7 +26,7 @@ class CartAppBar extends StatelessWidget implements PreferredSizeWidget {
             'Your Cart',
             style: TextStyle(
                 fontFamily: DIConstants.SkiaFont,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w600,
                 color: ConstColors.DIGreen,
                 fontSize: 28),
           ),
