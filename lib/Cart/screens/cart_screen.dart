@@ -20,6 +20,7 @@ class _CartScreenState extends State<CartScreen> {
   double imageSize = 0.0;
   double fontSizeTitle = 0.0;
   double fontSizeSubtitle = 0.0;
+  int cartItemsCount = 0;
 
   @override
   void initState() {
@@ -97,24 +98,27 @@ class _CartScreenState extends State<CartScreen> {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            // return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data?.isEmpty == true) {
             final heightOfScreen = MediaQuery.of(context).size.height;
-            return Center(
-              child: SizedBox(
-                height: heightOfScreen * 0.3,
-                child: const Text(
-                  DIConstants.EmptyCartText,
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: DIConstants.AvertaDemoPE,
-                      color: ConstColors.DIGreen),
-                ),
-              ),
-            );
+            //if cart is empty show empty cart message
+            return Scaffold(
+                appBar: const CartAppBar(),
+                body: Center(
+                  child: SizedBox(
+                    height: heightOfScreen * 0.3,
+                    child: const Text(
+                      DIConstants.EmptyCartText,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: DIConstants.AvertaDemoPE,
+                          color: ConstColors.DIGreen),
+                    ),
+                  ),
+                ));
           } else {
-            cartItems = snapshot.data!;
+            cartItems = snapshot.data ?? [];
+            cartItemsCount = cartItems?.length ?? 0;
             return Scaffold(
               appBar: const CartAppBar(),
               body: Column(
@@ -159,7 +163,8 @@ class _CartScreenState extends State<CartScreen> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
                                       image: DecorationImage(
-                                        image: NetworkImage(item!.imageUrl),
+                                        image:
+                                            NetworkImage(item?.imageUrl ?? ''),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -175,7 +180,7 @@ class _CartScreenState extends State<CartScreen> {
                                       children: [
                                         //price
                                         Text(
-                                          "${item.price} ${item.currency}",
+                                          "${item?.price} ${item?.currency}",
                                           style: TextStyle(
                                             fontSize: fontSizeTitle,
                                             fontWeight: FontWeight.w700,
@@ -187,7 +192,7 @@ class _CartScreenState extends State<CartScreen> {
                                         // const SizedBox(height: 8),
                                         //date and time
                                         Text(
-                                          item.dateAndTime ?? "",
+                                          item?.dateAndTime ?? "",
                                           style: TextStyle(
                                             fontSize: fontSizeSubtitle,
                                             fontFamily:
@@ -203,7 +208,7 @@ class _CartScreenState extends State<CartScreen> {
                                     child: GestureDetector(
                                       onTap: () {
                                         print(item?.id);
-                                        _removeCartItem(item!.id);
+                                        _removeCartItem(item?.id ?? '');
                                       },
                                       child: Image.asset(
                                         'assets/images/delete.png',
@@ -225,99 +230,111 @@ class _CartScreenState extends State<CartScreen> {
                       },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: Container(
-                      // height: 140,
-                      color: const Color(0xFFE0F5FA),
-                      child: Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  if (cartItems?.isNotEmpty ?? false)
+                    Column(children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        child: Container(
+                          // height: 140,
+                          color: const Color(0xFFE0F5FA),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(DIConstants.SubTotalText,
-                                    style: TextStyle(
-                                        fontSize: fontSizeTitle,
-                                        fontFamily: DIConstants.AvertaDemoPE,
-                                        fontWeight: FontWeight.w700,
-                                        color: ConstColors.DIBGrey)),
-                                Text("46.00 AED",
-                                    style: TextStyle(
-                                        fontSize: fontSizeTitle,
-                                        fontFamily: DIConstants.AvertaDemoPE,
-                                        fontWeight: FontWeight.w700,
-                                        color: ConstColors.DIGreen)),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(DIConstants.SubTotalText,
+                                        style: TextStyle(
+                                            fontSize: fontSizeTitle,
+                                            fontFamily:
+                                                DIConstants.AvertaDemoPE,
+                                            fontWeight: FontWeight.w700,
+                                            color: ConstColors.DIBGrey)),
+                                    Text("46.00 AED",
+                                        style: TextStyle(
+                                            fontSize: fontSizeTitle,
+                                            fontFamily:
+                                                DIConstants.AvertaDemoPE,
+                                            fontWeight: FontWeight.w700,
+                                            color: ConstColors.DIGreen)),
+                                  ],
+                                ),
+                                SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(DIConstants.DiscountText,
+                                        style: TextStyle(
+                                            fontSize: fontSizeTitle,
+                                            fontFamily:
+                                                DIConstants.AvertaDemoPE,
+                                            fontWeight: FontWeight.w700,
+                                            color: ConstColors.DIBGrey)),
+                                    Text("20.00 AED",
+                                        style: TextStyle(
+                                            fontSize: fontSizeTitle,
+                                            fontFamily:
+                                                DIConstants.AvertaDemoPE,
+                                            fontWeight: FontWeight.w700,
+                                            color: Color(0xFFFF5959))),
+                                  ],
+                                ),
+                                SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(DIConstants.TotalText,
+                                        style: TextStyle(
+                                            fontSize: fontSizeTitle,
+                                            fontFamily:
+                                                DIConstants.AvertaDemoPE,
+                                            fontWeight: FontWeight.w700,
+                                            color: ConstColors.DIBGrey)),
+                                    Text("26.00 AED",
+                                        style: TextStyle(
+                                            fontSize: fontSizeTitle,
+                                            fontFamily:
+                                                DIConstants.AvertaDemoPE,
+                                            fontWeight: FontWeight.w700,
+                                            color: ConstColors.DIGreen)),
+                                  ],
+                                ),
                               ],
                             ),
-                            SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(DIConstants.DiscountText,
-                                    style: TextStyle(
-                                        fontSize: fontSizeTitle,
-                                        fontFamily: DIConstants.AvertaDemoPE,
-                                        fontWeight: FontWeight.w700,
-                                        color: ConstColors.DIBGrey)),
-                                Text("20.00 AED",
-                                    style: TextStyle(
-                                        fontSize: fontSizeTitle,
-                                        fontFamily: DIConstants.AvertaDemoPE,
-                                        fontWeight: FontWeight.w700,
-                                        color: Color(0xFFFF5959))),
-                              ],
-                            ),
-                            SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(DIConstants.TotalText,
-                                    style: TextStyle(
-                                        fontSize: fontSizeTitle,
-                                        fontFamily: DIConstants.AvertaDemoPE,
-                                        fontWeight: FontWeight.w700,
-                                        color: ConstColors.DIBGrey)),
-                                Text("26.00 AED",
-                                    style: TextStyle(
-                                        fontSize: fontSizeTitle,
-                                        fontFamily: DIConstants.AvertaDemoPE,
-                                        fontWeight: FontWeight.w700,
-                                        color: ConstColors.DIGreen)),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0D7B8A),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero,
                           ),
                         ),
-                        onPressed: () {
-                          PaymentMethodsOverlay.show(context);
-                        },
-                        child: const Text(DIConstants.purchaseAll,
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: Color(0xFFFFFFFF),
-                                fontFamily: DIConstants.AvertaDemoPE,
-                                fontWeight: FontWeight.w600)),
                       ),
-                    ),
-                  ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 20, bottom: 20),
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF0D7B8A),
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.zero,
+                              ),
+                            ),
+                            onPressed: () {
+                              PaymentMethodsOverlay.show(context);
+                            },
+                            child: const Text(DIConstants.purchaseAll,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Color(0xFFFFFFFF),
+                                    fontFamily: DIConstants.AvertaDemoPE,
+                                    fontWeight: FontWeight.w600)),
+                          ),
+                        ),
+                      ),
+                    ])
                 ],
               ),
             );
