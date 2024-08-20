@@ -24,10 +24,10 @@ class _ImageDownloadedBottomToastWidgetState
         ),
       ),
       child: SizedBox(
-        height: 73,
+        height: 56,
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.only(left: 42, right: 20),
+          padding: const EdgeInsets.only(left:20, right: 20),
           child: Row(
             children: [
               Text(
