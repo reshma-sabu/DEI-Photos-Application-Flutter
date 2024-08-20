@@ -1,4 +1,5 @@
 import 'package:atlantis_di_photos_app/offers/offers_screen.dart';
+import 'package:atlantis_di_photos_app/store/screens/store.dart';
 import 'package:atlantis_di_photos_app/store/screens/store_screen.dart';
 import 'package:atlantis_di_photos_app/utils/colors.dart';
 import 'package:atlantis_di_photos_app/utils/constants.dart';
@@ -10,11 +11,12 @@ class PurchasedTabScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const DefaultTabController(
+    final ValueNotifier<int> countOfCheckboxes = ValueNotifier<int>(0);
+    return  DefaultTabController(
       length: 2,
       child: Column(
         children: [
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(left: 16.0),
             child: Row(
               children: [
@@ -73,8 +75,9 @@ class PurchasedTabScreen extends StatelessWidget {
           Expanded(
             child: TabBarView(
               children: [
-                StoreScreen(),
-                DownloadImageWidget(),
+                // StoreScreen(),
+                StoreTab(countOfCheckboxes: countOfCheckboxes),
+                const DownloadImageWidget(),
               ],
             ),
           ),

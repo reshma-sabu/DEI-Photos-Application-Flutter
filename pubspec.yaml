@@ -100,6 +100,8 @@ flutter:
     - assets/images/applePay.png
     - assets/cart_details.json
     - assets/images/cart.png
+    - assets/images/Vector_(3).png
+    - assets/images.json
 
   
   fonts:
