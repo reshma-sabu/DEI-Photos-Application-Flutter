@@ -19,14 +19,16 @@ class PurchasedScreen extends StatelessWidget {
             width: 10.24,
           ),
         ),
-        title: const Text(
-          'Photo Booth',
-          style: TextStyle(
-            color: ConstColors.DIGreen,
-            fontFamily: DIConstants.SkiaFont,
-            fontSize: 20,
-            //figma weight is 400
-            fontWeight: FontWeight.w700,
+        title: const Center(
+          child: Text(
+            'Photo Booth',
+            style: TextStyle(
+              color: ConstColors.DIGreen,
+              fontFamily: DIConstants.SkiaFont,
+              fontSize: 20,
+              //figma weight is 400
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
         actions: [

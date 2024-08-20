@@ -22,13 +22,15 @@ class CartAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       title: const Column(
         children: [
-          Text(
-            'Your Cart',
-            style: TextStyle(
-                fontFamily: DIConstants.SkiaFont,
-                fontWeight: FontWeight.w600,
-                color: ConstColors.DIGreen,
-                fontSize: 28),
+          Center(
+            child: Text(
+              'Your Cart',
+              style: TextStyle(
+                  fontFamily: DIConstants.SkiaFont,
+                  fontWeight: FontWeight.w600,
+                  color: ConstColors.DIGreen,
+                  fontSize: 28),
+            ),
           ),
         ],
       ),
