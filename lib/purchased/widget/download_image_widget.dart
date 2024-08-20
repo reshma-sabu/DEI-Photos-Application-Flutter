@@ -42,7 +42,7 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
         //time format
         final now = DateTime.now();
         final dateFormat = DateFormat('yyyy MMM dd');
-        final timeFormat = DateFormat('h:mm a'); // 12-hour format with AM/PM
+        final timeFormat = DateFormat('h:mm:ss a'); // 12-hour format with AM/PM
         final datePart = dateFormat.format(now);
         final timePart = timeFormat.format(now);
         var filename = '${dir?.path}/DEI_Image_${datePart}_${timePart}.png';
