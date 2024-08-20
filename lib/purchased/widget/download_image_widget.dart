@@ -150,6 +150,7 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             final heightOfScreen = MediaQuery.of(context).size.height;
+            //no purchased photo message 
             return Center(
               child: SizedBox(
                 height: heightOfScreen * 0.3,
@@ -237,6 +238,7 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
                             itemBuilder: (context, index) {
                               final data = purchasedImageList[sectionIndex]
                                   .imageDetail[index];
+                              final double imageSize = screenWidth / 3 - 10;
                               return SizedBox(
                                 child: Stack(
                                   alignment: Alignment.center,
@@ -251,8 +253,8 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
                                         child: Image.network(
                                           data.imageUrl,
                                           fit: BoxFit.cover,
-                                          width: 112,
-                                          height: 112,
+                                          width: imageSize,
+                                          height: imageSize,
                                         ),
                                       ),
                                     ),
