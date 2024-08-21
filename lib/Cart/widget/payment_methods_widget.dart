@@ -63,6 +63,7 @@ class PaymentMethodsOverlay {
                           ),
                         ),
                         onPressed: () {
+                          overlayEntry?.remove();
                           PaymentSuccessOverlay.show(context);
                         },
                         child: Center(

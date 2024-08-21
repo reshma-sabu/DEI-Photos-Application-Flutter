@@ -97,7 +97,9 @@ class PaymentSuccessOverlay {
                             borderRadius: BorderRadius.zero,
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          overlayEntry?.remove();
+                        },
                         child: const Text(DIConstants.ViewPurchasesText,
                             style: TextStyle(
                                 fontSize: 17,

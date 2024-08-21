@@ -1,3 +1,4 @@
+import 'package:atlantis_di_photos_app/Cart/screens/cart_screen.dart';
 import 'package:atlantis_di_photos_app/offers/offers_screen.dart';
 import 'package:atlantis_di_photos_app/store/screens/store.dart';
 import 'package:atlantis_di_photos_app/store/screens/store_screen.dart';
@@ -6,9 +7,14 @@ import 'package:atlantis_di_photos_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'widget/download_image_widget.dart';
 
-class PurchasedTabScreen extends StatelessWidget {
+class PurchasedTabScreen extends StatefulWidget {
   const PurchasedTabScreen({super.key});
 
+  @override
+  State<PurchasedTabScreen> createState() => _PurchasedTabScreenState();
+}
+
+class _PurchasedTabScreenState extends State<PurchasedTabScreen> {
   @override
   Widget build(BuildContext context) {
     final ValueNotifier<int> countOfCheckboxes = ValueNotifier<int>(0);
@@ -71,7 +77,7 @@ class PurchasedTabScreen extends StatelessWidget {
               ],
             ),
           ),
-          
+
           Expanded(
             child: TabBarView(
               children: [

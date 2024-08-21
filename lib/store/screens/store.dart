@@ -1,16 +1,17 @@
 import 'dart:convert';
+import 'package:atlantis_di_photos_app/Cart/screens/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
- 
+
 class StoreTab extends StatefulWidget {
   final ValueNotifier<int> countOfCheckboxes;
- 
+
   const StoreTab({Key? key, required this.countOfCheckboxes}) : super(key: key);
- 
+
   @override
   State<StoreTab> createState() => _StoreTabState();
 }
- 
+
 class _StoreTabState extends State<StoreTab> {
   List<dynamic> imagePaths = [];
   List<String> aquaventureImages = [];
@@ -19,38 +20,38 @@ class _StoreTabState extends State<StoreTab> {
   List<String> aquaventureImagesPaths = [];
   List<String> dolphinBayImagesPaths = [];
   List<String> lostChambersImagesPaths = [];
- 
+
   List<String> aquaventureImagesTotal = [];
   List<String> lostChambersImagesTotal = [];
   List<String> dolphinBayImagesTotal = [];
   List<String> aquaventureImagesPathsTotal = [];
   List<String> dolphinBayImagesPathsTotal = [];
   List<String> lostChambersImagesPathsTotal = [];
- 
+
   // late String aquaventureHeading;
   // late String dolphinBayHeading;
   // late String lostChambersHeading;
- 
+
   // Initializing checkedStatus with all false values
   List<bool> checkedStatusAquaventurePhotos = [];
   List<bool> checkedStatusDolphinBayPhotos = [];
   List<bool> checkedStatusLostChambersPhotos = [];
- 
+
   List<bool> checkedStatusAquaventurePhotosTotal = [];
   List<bool> checkedStatusDolphinBayPhotosTotal = [];
   List<bool> checkedStatusLostChambersPhotosTotal = [];
- 
+
   int checkBox = 0;
- 
+
   // State to control the visibility of the bottom popup bar
   bool isBottomBarVisible = false;
- 
+
   @override
   void initState() {
     super.initState();
     _loadImagesFromJson();
   }
- 
+
   bool get isAnyCheckboxSelected {
     return checkedStatusAquaventurePhotos.contains(true) ||
         checkedStatusDolphinBayPhotos.contains(true) ||
@@ -59,12 +60,12 @@ class _StoreTabState extends State<StoreTab> {
         checkedStatusDolphinBayPhotosTotal.contains(true) ||
         checkedStatusLostChambersPhotosTotal.contains(true);
   }
- 
+
   void _toggleBottomBar() {
     setState(() {
       isBottomBarVisible = true; // Show the bottom bar
     });
- 
+
     // Automatically hide the bar after a few seconds
     Future.delayed(const Duration(seconds: 2), () {
       setState(() {
@@ -72,7 +73,7 @@ class _StoreTabState extends State<StoreTab> {
       });
     });
   }
- 
+
   Widget buildImageGrid({
     required BuildContext context,
     required List<String> imagePaths,
@@ -94,7 +95,7 @@ class _StoreTabState extends State<StoreTab> {
         padding: const EdgeInsets.only(left: 25, right: 25),
         itemBuilder: (context, index) {
           final imageUrl = imagePaths[index];
-     
+
           return Stack(
             alignment: AlignmentDirectional.bottomEnd,
             children: [
@@ -196,7 +197,7 @@ class _StoreTabState extends State<StoreTab> {
       ),
     );
   }
- 
+
   Widget _displayOffers() {
     return Padding(
       padding: const EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 25),
@@ -281,9 +282,9 @@ class _StoreTabState extends State<StoreTab> {
       ),
     );
   }
- 
+
   final List<String> _savedTitles = [];
- 
+
   void _saveTitle(String title) {
     setState(() {
       if (!_savedTitles.contains(title)) {
@@ -291,7 +292,7 @@ class _StoreTabState extends State<StoreTab> {
       }
     });
   }
- 
+
   Widget buildCustomHeader({
     required String title,
     required String buttonText,
@@ -317,7 +318,7 @@ class _StoreTabState extends State<StoreTab> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     disabledBackgroundColor: Colors.transparent,
-                    backgroundColor: Colors.white,
+                    backgroundColor: Colors.transparent,
                     shadowColor: Colors.white,
                     elevation: 0,
                     side: BorderSide(
@@ -332,8 +333,8 @@ class _StoreTabState extends State<StoreTab> {
                   ),
                   onPressed: imagePaths.isNotEmpty
                       ? () {
-                        _saveTitle(title);
-                        _changeStack(title);
+                          _saveTitle(title);
+                          _changeStack(title);
                         }
                       : null,
                   child: Row(
@@ -350,8 +351,11 @@ class _StoreTabState extends State<StoreTab> {
                               : const Color(0xff0D7B8A),
                         ),
                       ),
-                      const Icon(
-                        IconData(
+                      Icon(
+                        color: imagePaths.isEmpty
+                            ? const Color(0xffC6CDD1)
+                            : const Color(0xff0D7B8A),
+                        const IconData(
                           0xee8c,
                           fontFamily: 'MaterialIcons',
                           matchTextDirection: true,
@@ -368,7 +372,7 @@ class _StoreTabState extends State<StoreTab> {
       ),
     );
   }
- 
+
   Widget buildCustomHeader2({
     required String title,
     required List<String> imagePaths,
@@ -388,14 +392,12 @@ class _StoreTabState extends State<StoreTab> {
                 color: Color(0xff0D7B8A),
               ),
             ),
-           
           ],
         ),
       ),
     );
   }
- 
- 
+
   Widget _displayNoPhotos() {
     return Padding(
       padding: const EdgeInsets.only(left: 25, right: 25),
@@ -418,15 +420,15 @@ class _StoreTabState extends State<StoreTab> {
       ),
     );
   }
- 
+
   void _updatePhotoSelection() {
     widget.countOfCheckboxes.value = checkBox;
   }
- 
+
   Widget _buildFirstWidget() {
     final double screenWidth = MediaQuery.of(context).size.width;
     final int columns = (screenWidth / 120).floor();
- 
+
     return Stack(children: [
       SingleChildScrollView(
         child: Column(
@@ -450,7 +452,7 @@ class _StoreTabState extends State<StoreTab> {
                 buttonText: 'View More',
                 imagePaths: lostChambersImagesPaths),
             _displayOffers(),
-             lostChambersImagesPaths.isEmpty
+            lostChambersImagesPaths.isEmpty
                 ? _displayNoPhotos()
                 : buildImageGrid(
                     context: context,
@@ -476,7 +478,7 @@ class _StoreTabState extends State<StoreTab> {
           ],
         ),
       ),
- 
+
       Positioned(
         bottom: 10,
         left: 0,
@@ -507,7 +509,10 @@ class _StoreTabState extends State<StoreTab> {
                     ),
                     onPressed: isAnyCheckboxSelected
                         ? () {
-                            // Your cart action here
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return CartScreen();
+                            }));
                           }
                         : null,
                     child: const Text(
@@ -524,7 +529,7 @@ class _StoreTabState extends State<StoreTab> {
           ),
         ),
       ),
- 
+
       // Toggle Bottom Bar (overlaps the Proceed to Cart button)
       if (isBottomBarVisible)
         Positioned(
@@ -567,11 +572,11 @@ class _StoreTabState extends State<StoreTab> {
         ),
     ]);
   }
- 
+
   Widget _buildAquaventureWidget() {
     final double screenWidth = MediaQuery.of(context).size.width;
     final int columns = (screenWidth / 120).floor();
- 
+
     return Column(
       children: [
         Expanded(
@@ -585,15 +590,15 @@ class _StoreTabState extends State<StoreTab> {
                       imagePaths: aquaventureImagesPathsTotal),
                   _displayOffers(),
                   buildImageGrid(
-                          context: context,
-                          imagePaths: aquaventureImagesPathsTotal,
-                          checkedStatus: checkedStatusAquaventurePhotosTotal,
-                          columns: columns,
-                        ),            
+                    context: context,
+                    imagePaths: aquaventureImagesPathsTotal,
+                    checkedStatus: checkedStatusAquaventurePhotosTotal,
+                    columns: columns,
+                  ),
                 ],
               ),
             ),
-         
+
             Positioned(
               bottom: 10,
               left: 0,
@@ -641,7 +646,7 @@ class _StoreTabState extends State<StoreTab> {
                 ),
               ),
             ),
-         
+
             // Toggle Bottom Bar (overlaps the Proceed to Cart button)
             if (isBottomBarVisible)
               Positioned(
@@ -653,7 +658,8 @@ class _StoreTabState extends State<StoreTab> {
                   decoration: const BoxDecoration(
                       color: Color(0xffFFB600),
                       borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(8), topRight: Radius.circular(8))),
+                          topLeft: Radius.circular(8),
+                          topRight: Radius.circular(8))),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 25, right: 25),
                     child: Row(
@@ -687,11 +693,11 @@ class _StoreTabState extends State<StoreTab> {
       ],
     );
   }
- 
+
   Widget _buildLostChamberWidget() {
     final double screenWidth = MediaQuery.of(context).size.width;
     final int columns = (screenWidth / 120).floor();
- 
+
     return Stack(children: [
       SingleChildScrollView(
         child: Column(
@@ -702,15 +708,15 @@ class _StoreTabState extends State<StoreTab> {
                 imagePaths: lostChambersImagesPathsTotal),
             _displayOffers(),
             buildImageGrid(
-                    context: context,
-                    imagePaths: lostChambersImagesPathsTotal,
-                    checkedStatus: checkedStatusLostChambersPhotosTotal,
-                    columns: columns,
-                  ),            
+              context: context,
+              imagePaths: lostChambersImagesPathsTotal,
+              checkedStatus: checkedStatusLostChambersPhotosTotal,
+              columns: columns,
+            ),
           ],
         ),
       ),
- 
+
       Positioned(
         bottom: 10,
         left: 0,
@@ -758,7 +764,7 @@ class _StoreTabState extends State<StoreTab> {
           ),
         ),
       ),
- 
+
       // Toggle Bottom Bar (overlaps the Proceed to Cart button)
       if (isBottomBarVisible)
         Positioned(
@@ -801,11 +807,11 @@ class _StoreTabState extends State<StoreTab> {
         ),
     ]);
   }
- 
+
   Widget _buildDolphinBayWidget() {
     final double screenWidth = MediaQuery.of(context).size.width;
     final int columns = (screenWidth / 120).floor();
- 
+
     return Column(
       children: [
         Expanded(
@@ -819,15 +825,15 @@ class _StoreTabState extends State<StoreTab> {
                       imagePaths: dolphinBayImagesPathsTotal),
                   _displayOffers(),
                   buildImageGrid(
-                          context: context,
-                          imagePaths: dolphinBayImagesPathsTotal,
-                          checkedStatus: checkedStatusDolphinBayPhotosTotal,
-                          columns: columns,
-                        ),            
+                    context: context,
+                    imagePaths: dolphinBayImagesPathsTotal,
+                    checkedStatus: checkedStatusDolphinBayPhotosTotal,
+                    columns: columns,
+                  ),
                 ],
               ),
             ),
-         
+
             Positioned(
               bottom: 10,
               left: 0,
@@ -875,7 +881,7 @@ class _StoreTabState extends State<StoreTab> {
                 ),
               ),
             ),
-         
+
             // Toggle Bottom Bar (overlaps the Proceed to Cart button)
             if (isBottomBarVisible)
               Positioned(
@@ -887,7 +893,8 @@ class _StoreTabState extends State<StoreTab> {
                   decoration: const BoxDecoration(
                       color: Color(0xffFFB600),
                       borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(8), topRight: Radius.circular(8))),
+                          topLeft: Radius.circular(8),
+                          topRight: Radius.circular(8))),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 25, right: 25),
                     child: Row(
@@ -897,7 +904,8 @@ class _StoreTabState extends State<StoreTab> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(right: 8),
-                              child: Image.asset('assets/images/Vector_(2).png'),
+                              child:
+                                  Image.asset('assets/images/Vector_(2).png'),
                             ),
                             const Center(
                               child: Text(
@@ -921,37 +929,35 @@ class _StoreTabState extends State<StoreTab> {
       ],
     );
   }
- 
+
   int _currentIndex = 0;
- 
-void _changeStack(String category) {
-  setState(() {
-    if (category == 'Aquaventure') {
-      _currentIndex = 1;
-    } else if (category == 'Lost Chambers') {
-      _currentIndex = 2;
-    }
-    else if (category == 'Dolphin Bay') {
-      _currentIndex = 3;
-    }
-    else {
-      _currentIndex = 0; // Default to first widget if needed
-    }
-  });
-}
- 
+
+  void _changeStack(String category) {
+    setState(() {
+      if (category == 'Aquaventure') {
+        _currentIndex = 1;
+      } else if (category == 'Lost Chambers') {
+        _currentIndex = 2;
+      } else if (category == 'Dolphin Bay') {
+        _currentIndex = 3;
+      } else {
+        _currentIndex = 0; // Default to first widget if needed
+      }
+    });
+  }
+
   Future<void> _loadImagesFromJson() async {
     // Load the JSON file
     final String response = await rootBundle.loadString('assets/images.json');
     final data = json.decode(response);
- 
+
     // Extract the image paths
     List<dynamic> loadedImagePaths = data['images'];
- 
+
     //   aquaventureHeading = data['images'].keys.first;
     //   dolphinBayHeading = data['images'].keys.second;
     //   lostChambersHeading = data['iamges'].keys.third;
- 
+
     for (var image in loadedImagePaths) {
       if (image['id'] == "Aquaventure" && aquaventureImages.length < 6) {
         aquaventureImages.add(image['url']);
@@ -961,7 +967,7 @@ void _changeStack(String category) {
         dolphinBayImages.add(image['url']);
       }
     }
- 
+
     for (var image in loadedImagePaths) {
       if (image['id'] == "Aquaventure" ) {
         aquaventureImagesTotal.add(image['url']);
@@ -971,7 +977,7 @@ void _changeStack(String category) {
         dolphinBayImagesTotal.add(image['url']);
       }
     }
- 
+
     // for (var image in loadedImagePaths) {
     //   if (image['id'] == "Aquaventure") {
     //     aquaventureImages.add(image['url']);
@@ -981,7 +987,7 @@ void _changeStack(String category) {
     //     dolphinBayImages.add(image['url']);
     //   }
     // }
- 
+
     setState(() {
       imagePaths = loadedImagePaths;
       aquaventureImagesPaths = aquaventureImages;
@@ -1004,18 +1010,16 @@ void _changeStack(String category) {
           List<bool>.filled(lostChambersImagesPathsTotal.length, false);
     });
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        if(_currentIndex == 0) _buildFirstWidget(),
-        if(_currentIndex == 1) _buildAquaventureWidget(),
-        if(_currentIndex == 2) _buildLostChamberWidget(),
-        if(_currentIndex == 3) _buildDolphinBayWidget()
+        if (_currentIndex == 0) _buildFirstWidget(),
+        if (_currentIndex == 1) _buildAquaventureWidget(),
+        if (_currentIndex == 2) _buildLostChamberWidget(),
+        if (_currentIndex == 3) _buildDolphinBayWidget()
       ],
     );
   }
 }
- 
- 

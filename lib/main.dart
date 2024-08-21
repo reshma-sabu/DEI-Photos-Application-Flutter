@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ConstColors.DIGreen,
         useMaterial3: true,
       ),
-      home: const PurchasedScreen(),
+      home: const PhotoBooth()
     );
   }
 }
