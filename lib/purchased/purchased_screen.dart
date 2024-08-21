@@ -36,7 +36,7 @@ class PurchasedScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 20.0),
             child: IconButton(
               icon: Image.asset(
-                'assets/images/cart.png',
+                'assets/images/cartItemIcon.png',
                 height: 21.21,
                 width: 24,
               ),

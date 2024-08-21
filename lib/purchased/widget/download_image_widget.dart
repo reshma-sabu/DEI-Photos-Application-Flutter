@@ -230,8 +230,8 @@ class _DownloadImageWidgetState extends State<DownloadImageWidget> {
                               maxCrossAxisExtent:
                                   // Max extent of each cell
                                   screenWidth / 3,
-                              mainAxisSpacing: 10,
-                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 12,
+                              crossAxisSpacing: 12,
                               // Ensure square cells
                               childAspectRatio: 1,
                             ),
