@@ -53,4 +53,11 @@ class OfferPriceDetail {
       selectedDropdownOption: json['selectedDropdownOption'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        "offerDetail": offerDetail,
+        "imageCount": imageCount,
+        "amount": amount,
+        "currency": currency,
+    };
 }

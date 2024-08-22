@@ -1,0 +1,27 @@
+[
+    {
+      "parkId": "kjwjfljwlef",
+      "parkName": "AquaVenture",
+      "selectedImageCount": 3,
+      "images": [
+        {
+          "isDownloaded": false,
+          "imageUrl": "https://picsum.photos/id/237/200/300",
+          "id": "kjfw",
+          "parkId": "kjwjfljwlef",
+          "amount": 10,
+          "currency": "AED",
+          "isSelected": true
+        }
+      ],
+      "offers": [
+        {
+          "offerDetail": "",
+          "imageCount": 3,
+          "OfferAmount": 20,
+          "Currency": "AED"
+        }
+      ]
+    }
+  ]
+  
